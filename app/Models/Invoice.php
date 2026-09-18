@@ -129,4 +129,55 @@ class Invoice extends Model
     {
         return $this->hasMany(InvoiceItem::class);
     }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * Total paid amount derived from the payments ledger.
+     */
+    public function getPaidAmountAttribute(): string
+    {
+        $sum = $this->payments()->sum('amount');
+
+        return number_format((float) $sum, 2, '.', '');
+    }
+
+    /**
+     * Remaining balance to be paid.
+     */
+    public function getOutstandingAmountAttribute(): string
+    {
+        $paid = (float) $this->paid_amount;
+        $total = (float) $this->total;
+        $remaining = max(0.0, $total - $paid);
+
+        return number_format($remaining, 2, '.', '');
+    }
+
+    /**
+     * Recalculate and update status based on payment ledger.
+     */
+    public function recalculateStatus(): InvoiceStatus
+    {
+        $totalPaid = (float) $this->payments()->sum('amount');
+        $invoiceTotal = (float) $this->total;
+
+        if ($totalPaid >= $invoiceTotal) {
+            $newStatus = InvoiceStatus::PAID;
+        } elseif ($totalPaid > 0) {
+            $newStatus = InvoiceStatus::PARTIALLY_PAID;
+        } else {
+            $newStatus = InvoiceStatus::SENT;
+        }
+
+        if ($this->status !== $newStatus) {
+            $this->status = $newStatus;
+            $this->save();
+        }
+
+        return $newStatus;
+    }
 }
