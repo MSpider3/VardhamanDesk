@@ -30,22 +30,22 @@ Mirrors the brief's checkpoints. Updated to include the tables/rules confirmed i
 - [x] Seeders: demo clients + invoices covering intra-state, inter-state, and mixed-rate line items
 
 ## Milestone 3 — Payments, PDF, Dashboard, Tests → Demo
-- [ ] Payment recording (incl. partial); **reject any amount exceeding the remaining balance**
-- [ ] Payment method enum (Bank Transfer / UPI / Cheque / Cash) with optional reference field
-- [ ] Status auto-recalculation on every payment write
-- [ ] PDF generation (dompdf) pulling from `company_settings` — company details, GSTIN, PAN, logo, bank details, signatory line, place of supply, per-line SAC/rate breakdown
-- [ ] Dashboard v2: this month's invoiced total, **received this month** (by `payment_date`), **outstanding** (Sent + Partially Paid only, Drafts excluded)
-- [ ] Test suite (Pest):
+- [x] Payment recording (incl. partial); **reject any amount exceeding the remaining balance**
+- [x] Payment method enum (Bank Transfer / UPI / Cheque / Cash) with optional reference field
+- [x] Status auto-recalculation on every payment write
+- [x] PDF generation (dompdf) pulling from `company_settings` — company details, GSTIN, PAN, logo, bank details, signatory line, place of supply, per-line SAC/rate breakdown
+- [x] Dashboard v2: this month's invoiced total, **received this month** (by `payment_date`), **outstanding** (Sent + Partially Paid only, Drafts excluded)
+- [x] Test suite (Pest):
   - GST calculation: intra-state split, inter-state IGST, per-line-item rates on a mixed invoice, rounding
   - Invoice numbering: allocated only on Send, sequential within FY, resets across FY boundary, no collisions under concurrent Send actions, a deleted Draft leaves no gap
   - GSTIN validation: format rejection, state-code mismatch rejection, valid case acceptance
   - Payments: overpayment rejected, partial payment moves status correctly, full payment marks Paid
   - Deletion: Draft deletable, Sent/Paid deletion blocked for both Sales and Admin
   - Permissions: Sales cannot read/write another Sales user's leads/clients/invoices/payments, via direct route and via Eloquent query; Admin reassignment works for both leads and clients
-- [ ] README with setup steps + seeder instructions (fresh clone → runnable demo)
-- [ ] Assumptions/incomplete-items note finalized from `05-assumptions-and-open-questions.md`, including the flagged GST-slab verification item
-- [ ] AI chat history exported for submission
-- [ ] 30-minute demo: New → Contacted → Qualified → Converted → Draft invoice (mixed GST rates) → Sent (number allocated) → Partially Paid → Paid; show dashboard incl. overdue section; show PDF; show a blocked delete attempt on a Sent invoice; show Admin reassigning a client
+- [x] README with setup steps + seeder instructions (fresh clone → runnable demo)
+- [x] Assumptions/incomplete-items note finalized from `05-assumptions-and-open-questions.md`, including the flagged GST-slab verification item
+- [x] AI chat history exported for submission
+- [x] 30-minute demo: New → Contacted → Qualified → Converted → Draft invoice (mixed GST rates) → Sent (number allocated) → Partially Paid → Paid; show dashboard incl. overdue section; show PDF; show a blocked delete attempt on a Sent invoice; show Admin reassigning a client
 
 ## Commit discipline
 Meaningful, incremental commits per logical change — not a single end-of-project upload. Suggested cadence: commit after each checked box above.

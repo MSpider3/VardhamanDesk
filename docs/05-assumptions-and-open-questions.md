@@ -52,3 +52,10 @@ Everything here has been reviewed and confirmed by the client. This file is the 
 - Credit notes / invoice cancellation workflow
 - Multi-company / multi-GSTIN support
 - E-invoicing / IRN generation via the GST portal API
+
+## Pre-Go-Live Checklist & Client Action Items
+Before deploying to production and issuing legal invoices, the following non-code configuration/placeholder items must be finalized with the client and their Chartered Accountant:
+1. **CA Confirmation of Exact SAC Codes**: Confirm the exact 6-digit SAC code for all service lines (default placeholder: `998313` for IT Consulting and Support).
+2. **Real Company & Banking Information**: Replace the placeholder row in `company_settings` with actual legal entity name, registered office address, valid GSTIN, PAN, bank account number, bank name, IFSC, authorized signatory designation, and high-resolution logo image.
+3. **Optional Checksum Validation**: Client to decide if 15th-character checksum algorithm validation is required prior to Phase 2 operations (currently format + 2-digit state code cross-check is enforced).
+4. **Runtime GST Slab Administration**: If future GST Council notifications alter slabs, configure new rates directly in `gst_rates` table via database seeder or administrative interface.
