@@ -175,6 +175,13 @@ class InvoicesTable
                         }
                     }),
 
+                Action::make('download_pdf')
+                    ->label('PDF')
+                    ->icon(Heroicon::OutlinedArrowDownTray)
+                    ->color('gray')
+                    ->url(fn (Invoice $record) => route('invoices.pdf', $record))
+                    ->openUrlInNewTab(),
+
                 EditAction::make()
                     ->visible(fn (Invoice $record) => ($record->status instanceof InvoiceStatus ? $record->status === InvoiceStatus::DRAFT : $record->status === InvoiceStatus::DRAFT->value)),
 

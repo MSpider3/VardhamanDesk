@@ -48,6 +48,13 @@ class EditInvoice extends EditRecord
                     $this->redirect(InvoiceResource::getUrl('index'));
                 }),
 
+            Action::make('download_pdf')
+                ->label('Download PDF')
+                ->icon(Heroicon::OutlinedArrowDownTray)
+                ->color('gray')
+                ->url(fn () => route('invoices.pdf', $this->record))
+                ->openUrlInNewTab(),
+
             DeleteAction::make()
                 ->visible(fn () => $this->record->status === InvoiceStatus::DRAFT || $this->record->status === InvoiceStatus::DRAFT->value),
         ];
