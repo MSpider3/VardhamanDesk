@@ -91,4 +91,25 @@ class InvoicePolicy
     {
         return $this->update($user, $invoice);
     }
+
+    /**
+     * Determine whether the user can record payments against the invoice.
+     */
+    public function recordPayment(User $user, Invoice $invoice): bool
+    {
+        $isSent = $invoice->status === InvoiceStatus::SENT || $invoice->status === InvoiceStatus::SENT->value;
+        $isPartiallyPaid = $invoice->status === InvoiceStatus::PARTIALLY_PAID || $invoice->status === InvoiceStatus::PARTIALLY_PAID->value;
+
+        if (! $isSent && ! $isPartiallyPaid) {
+            return false;
+        }
+
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        $client = $invoice->client;
+
+        return $client && $client->assigned_to === $user->id;
+    }
 }

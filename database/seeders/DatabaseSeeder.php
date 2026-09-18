@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\LeadSource;
 use App\Enums\LeadStatus;
+use App\Enums\PaymentMethod;
 use App\Enums\UserRole;
 use App\Models\Client;
 use App\Models\CompanySetting;
@@ -13,6 +14,7 @@ use App\Models\LeadNote;
 use App\Models\User;
 use App\Services\InvoiceDraftService;
 use App\Services\InvoiceSendService;
+use App\Services\RecordPayment;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -415,17 +417,22 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 7. Seed Invoices (Draft & Sent, Intra-state & Inter-state, Mixed Rates)
+        // 7. Seed Invoices & Payments (Draft, Sent, Partially Paid, Paid; Current & Prior Month; Intra & Inter-state)
         $draftService = app(InvoiceDraftService::class);
         $sendService = app(InvoiceSendService::class);
+        $recordPaymentService = app(RecordPayment::class);
+
+        $now = Carbon::now();
+        $currentMonth = $now->copy();
+        $priorMonth = $now->copy()->subMonth();
 
         // Invoice 1: Draft Intra-state with Mixed Rates (18% and 5%)
         $draftIntra = $draftService->createDraft(
             [
                 'client_id' => $clientDirectRaj->id,
                 'place_of_supply' => '08',
-                'invoice_date' => Carbon::today()->toDateString(),
-                'due_date' => Carbon::today()->addDays(30)->toDateString(),
+                'invoice_date' => $currentMonth->toDateString(),
+                'due_date' => $currentMonth->copy()->addDays(30)->toDateString(),
             ],
             [
                 [
@@ -446,54 +453,114 @@ class DatabaseSeeder extends Seeder
             $sales1
         );
 
-        // Invoice 2: Draft Inter-state (Maharashtra, 18%)
-        $draftInter = $draftService->createDraft(
+        // Invoice 2: Sent Intra-state Invoice (Sent with NO payments, Current Month)
+        $invoiceToSent1 = $draftService->createDraft(
             [
-                'client_id' => $clientDirectMh->id,
-                'place_of_supply' => '27',
-                'invoice_date' => Carbon::today()->toDateString(),
-                'due_date' => Carbon::today()->addDays(30)->toDateString(),
+                'client_id' => $clientDirectRaj->id,
+                'place_of_supply' => '08',
+                'invoice_date' => $currentMonth->copy()->startOfMonth()->addDays(1)->toDateString(),
+                'due_date' => $currentMonth->copy()->startOfMonth()->addDays(31)->toDateString(),
             ],
             [
                 [
-                    'description' => 'Cloud Infrastructure Management & Monitoring',
+                    'description' => 'Annual Software Maintenance Contract - Q1',
+                    'sac_code' => '998314',
+                    'quantity' => '1.00',
+                    'rate' => '40000.00',
+                    'gst_rate_id' => $gst18->id,
+                ],
+            ],
+            $sales1
+        );
+        $sendService->send($invoiceToSent1, $currentMonth->copy()->startOfMonth()->addDays(1)->toDateString());
+
+        // Invoice 3: Partially Paid Inter-state Invoice (Maharashtra, 18%, Current Month)
+        // Subtotal: 100,000 + IGST 18% (18,000) = 118,000.00
+        $invoicePartial = $draftService->createDraft(
+            [
+                'client_id' => $clientDirectMh->id,
+                'place_of_supply' => '27',
+                'invoice_date' => $currentMonth->copy()->startOfMonth()->addDays(3)->toDateString(),
+                'due_date' => $currentMonth->copy()->startOfMonth()->addDays(33)->toDateString(),
+            ],
+            [
+                [
+                    'description' => 'Cloud Infrastructure Management & Monitoring Setup',
                     'sac_code' => '998315',
                     'quantity' => '1.00',
-                    'rate' => '75000.00',
+                    'rate' => '100000.00',
                     'gst_rate_id' => $gst18->id,
                 ],
             ],
             $sales2
         );
+        $sentPartial = $sendService->send($invoicePartial, $currentMonth->copy()->startOfMonth()->addDays(3)->toDateString());
 
-        // Invoice 3: Sent Intra-state Invoice (number allocated sequentially)
-        $invoiceToSent1 = $draftService->createDraft(
+        // Record partial payment of 50,000.00 via UPI in current month
+        $recordPaymentService->execute(
+            $sentPartial,
+            [
+                'amount' => '50000.00',
+                'payment_date' => $currentMonth->copy()->startOfMonth()->addDays(6)->toDateString(),
+                'method' => PaymentMethod::UPI,
+                'reference_note' => 'UPI/2026/8892147',
+            ],
+            $sales2
+        );
+
+        // Invoice 4: Paid Intra-state Invoice (Issued in Prior Month, Payments in Prior & Current Month)
+        // Subtotal: 50,000 + CGST 9% (4,500) + SGST 9% (4,500) = 59,000.00
+        $invoicePaid = $draftService->createDraft(
             [
                 'client_id' => $clientConverted->id,
                 'place_of_supply' => '08',
-                'invoice_date' => Carbon::today()->subDays(10)->toDateString(),
-                'due_date' => Carbon::today()->addDays(20)->toDateString(),
+                'invoice_date' => $priorMonth->copy()->startOfMonth()->addDays(5)->toDateString(),
+                'due_date' => $priorMonth->copy()->startOfMonth()->addDays(35)->toDateString(),
             ],
             [
                 [
-                    'description' => 'Hospital Management ERP System Implementation - Phase 1',
+                    'description' => 'Hospital Management ERP System Implementation - Milestone 1',
                     'sac_code' => '998314',
                     'quantity' => '1.00',
-                    'rate' => '120000.00',
+                    'rate' => '50000.00',
                     'gst_rate_id' => $gst18->id,
                 ],
             ],
             $sales3
         );
-        $sendService->send($invoiceToSent1, Carbon::today()->subDays(10)->toDateString());
+        $sentPaid = $sendService->send($invoicePaid, $priorMonth->copy()->startOfMonth()->addDays(5)->toDateString());
 
-        // Invoice 4: Sent Inter-state Invoice with Mixed Rates (18% and 0% exempt export/research)
+        // Payment 1: 30,000.00 in Prior Month via Bank Transfer
+        $recordPaymentService->execute(
+            $sentPaid,
+            [
+                'amount' => '30000.00',
+                'payment_date' => $priorMonth->copy()->startOfMonth()->addDays(15)->toDateString(),
+                'method' => PaymentMethod::BANK_TRANSFER,
+                'reference_note' => 'NEFT/AXIS/98711200',
+            ],
+            $sales3
+        );
+
+        // Payment 2: 29,000.00 in Current Month via Cheque (completes payment to 59,000.00 -> PAID)
+        $recordPaymentService->execute(
+            $sentPaid,
+            [
+                'amount' => '29000.00',
+                'payment_date' => $currentMonth->copy()->startOfMonth()->addDays(2)->toDateString(),
+                'method' => PaymentMethod::CHEQUE,
+                'reference_note' => 'CHQ#440912',
+            ],
+            $sales3
+        );
+
+        // Invoice 5: Sent Intra-state Invoice with Mixed Rates (18% and 0%, Current Month, No Payments)
         $invoiceToSent2 = $draftService->createDraft(
             [
-                'client_id' => $clientDirectMh->id,
-                'place_of_supply' => '27',
-                'invoice_date' => Carbon::today()->subDays(5)->toDateString(),
-                'due_date' => Carbon::today()->addDays(25)->toDateString(),
+                'client_id' => $clientReassignable->id,
+                'place_of_supply' => '08',
+                'invoice_date' => $currentMonth->copy()->startOfMonth()->addDays(7)->toDateString(),
+                'due_date' => $currentMonth->copy()->startOfMonth()->addDays(37)->toDateString(),
             ],
             [
                 [
@@ -504,7 +571,7 @@ class DatabaseSeeder extends Seeder
                     'gst_rate_id' => $gst18->id,
                 ],
                 [
-                    'description' => 'Open Source Research Advisory',
+                    'description' => 'Open Source Research Advisory (Exempt)',
                     'sac_code' => '998319',
                     'quantity' => '1.00',
                     'rate' => '20000.00',
@@ -513,6 +580,6 @@ class DatabaseSeeder extends Seeder
             ],
             $sales2
         );
-        $sendService->send($invoiceToSent2, Carbon::today()->subDays(5)->toDateString());
+        $sendService->send($invoiceToSent2, $currentMonth->copy()->startOfMonth()->addDays(7)->toDateString());
     }
 }
