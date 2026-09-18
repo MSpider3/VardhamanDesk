@@ -1,9 +1,6 @@
 <?php
 
-use App\Enums\UserRole;
-use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Models\User;
-use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Gate;
 
 beforeEach(function () {

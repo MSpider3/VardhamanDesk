@@ -128,6 +128,6 @@ Antigravity — this work scaffolds a new application, creates multiple files, i
 7. Only the completed Milestone-1 items in `docs/06-milestones-and-deliverables.md` are checked off.
 
 ## Status
-- [ ] Implemented
-- [ ] Reviewed
-- [ ] Tested
+- [x] Implemented
+- [x] Reviewed
+- [x] Tested

@@ -8,14 +8,14 @@ Mirrors the brief's checkpoints. Updated to include the tables/rules confirmed i
 - [x] Independently verify the GST slab schedule (0/5/18/40%) — confirmed against CBIC Notification No. 9/2025-Central Tax (Rate), dated 17 Sep 2025, effective 22 Sep 2025; see `03-gst-and-invoicing-rules.md`
 
 ## Milestone 1 — Leads + Users
-- [ ] Migrations: `users`, `leads`, `lead_notes`
-- [ ] Seeders: 1 Admin, 2–3 Sales users, ~15 demo leads across statuses and all six sources
-- [ ] Auth (login/logout), role-based redirect
-- [ ] Lead CRUD; status can move to any other status except out of `converted` (terminal); `lost` reopenable
-- [ ] Notes + follow-up date; `next_follow_up_date` kept in sync
-- [ ] Dashboard v1: **Overdue follow-ups** section (before-today) above **Today's follow-ups**, scoped per-user for Sales / all for Admin
-- [ ] Ownership scoping enforced (`leads.assigned_to`) and manually verified
-- [ ] Admin can reassign a lead's `assigned_to`
+- [x] Migrations: `users`, `leads`, `lead_notes`
+- [x] Seeders: 1 Admin, 2–3 Sales users, ~15 demo leads across statuses and all six sources
+- [x] Auth (login/logout), role-based redirect
+- [x] Lead CRUD; status can move to any other status except out of `converted` (terminal); `lost` reopenable
+- [x] Notes + follow-up date; `next_follow_up_date` kept in sync
+- [x] Dashboard v1: **Overdue follow-ups** section (before-today) above **Today's follow-ups**, scoped per-user for Sales / all for Admin
+- [x] Ownership scoping enforced (`leads.assigned_to`) and manually verified
+- [x] Admin can reassign a lead's `assigned_to`
 
 ## Milestone 2 — Clients + Invoices
 - [ ] Migrations: `clients` (with its own `assigned_to`), `gst_rates`, `company_settings`, `invoices`, `invoice_items` (with `sac_code`, `gst_rate_id`), `financial_year_counters`

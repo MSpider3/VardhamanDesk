@@ -29,4 +29,5 @@ Thumbs.db
 output.json
 /.docs_for later_referal
 database/database.sqlite*
+/.agents/
 
