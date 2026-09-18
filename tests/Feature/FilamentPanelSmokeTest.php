@@ -53,6 +53,23 @@ test('admin can log in and access all panel areas', function () {
     $this->actingAs($this->admin)
         ->get('/admin/users')
         ->assertSuccessful();
+
+    // 5. Admin can view clients and invoices lists and create forms
+    $this->actingAs($this->admin)
+        ->get('/admin/clients')
+        ->assertSuccessful();
+
+    $this->actingAs($this->admin)
+        ->get('/admin/clients/create')
+        ->assertSuccessful();
+
+    $this->actingAs($this->admin)
+        ->get('/admin/invoices')
+        ->assertSuccessful();
+
+    $this->actingAs($this->admin)
+        ->get('/admin/invoices/create')
+        ->assertSuccessful();
 });
 
 test('sales user can log in and is strictly isolated to own records', function () {
@@ -61,6 +78,8 @@ test('sales user can log in and is strictly isolated to own records', function (
         ->get('/admin')
         ->assertSuccessful()
         ->assertSee('Leads')
+        ->assertSee('Clients')
+        ->assertSee('Invoices')
         ->assertDontSee('Users');
 
     // 2. Leads list is accessible
@@ -68,12 +87,21 @@ test('sales user can log in and is strictly isolated to own records', function (
         ->get('/admin/leads')
         ->assertSuccessful();
 
-    // 3. Directly attempting to view users is forbidden
+    // 3. Clients and Invoices lists are accessible
+    $this->actingAs($this->sales1)
+        ->get('/admin/clients')
+        ->assertSuccessful();
+
+    $this->actingAs($this->sales1)
+        ->get('/admin/invoices')
+        ->assertSuccessful();
+
+    // 4. Directly attempting to view users is forbidden
     $this->actingAs($this->sales1)
         ->get('/admin/users')
         ->assertForbidden();
 
-    // 4. Directly attempting to edit other sales rep lead is 404 (scoped out)
+    // 5. Directly attempting to edit other sales rep lead is 404 (scoped out)
     $this->actingAs($this->sales1)
         ->get("/admin/leads/{$this->leadSales2->id}/edit")
         ->assertNotFound();

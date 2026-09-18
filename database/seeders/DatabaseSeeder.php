@@ -5,9 +5,14 @@ namespace Database\Seeders;
 use App\Enums\LeadSource;
 use App\Enums\LeadStatus;
 use App\Enums\UserRole;
+use App\Models\Client;
+use App\Models\CompanySetting;
+use App\Models\GstRate;
 use App\Models\Lead;
 use App\Models\LeadNote;
 use App\Models\User;
+use App\Services\InvoiceDraftService;
+use App\Services\InvoiceSendService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -290,5 +295,224 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+
+        // 4. Seed Reference Tables: GST Rates (0, 5, 18, 40)
+        $gst0 = GstRate::firstOrCreate(
+            ['rate' => '0.00'],
+            ['label' => '0% GST', 'is_active' => true]
+        );
+        $gst5 = GstRate::firstOrCreate(
+            ['rate' => '5.00'],
+            ['label' => '5% GST', 'is_active' => true]
+        );
+        $gst18 = GstRate::firstOrCreate(
+            ['rate' => '18.00'],
+            ['label' => '18% GST', 'is_active' => true]
+        );
+        $gst40 = GstRate::firstOrCreate(
+            ['rate' => '40.00'],
+            ['label' => '40% GST (Sin/Luxury)', 'is_active' => true]
+        );
+
+        // 5. Seed Company Settings (Rajasthan supplier placeholder)
+        CompanySetting::firstOrCreate(
+            ['id' => 1],
+            [
+                'company_name' => 'Vardhaman Infotech Solutions',
+                'address' => 'Plot No. 42, Malviya Industrial Area, Jaipur, Rajasthan - 302017',
+                'gstin' => '08AABCV1234F1Z9',
+                'pan' => 'AABCV1234F',
+                'state' => 'Rajasthan',
+                'state_code' => '08',
+                'logo_path' => null,
+                'bank_account_name' => 'Vardhaman Infotech Solutions',
+                'bank_account_number' => '987654321012',
+                'bank_ifsc' => 'HDFC0001234',
+                'bank_name' => 'HDFC Bank, Malviya Nagar Branch',
+                'authorised_signatory_name' => 'Director / Authorized Signatory',
+            ]
+        );
+
+        // 6. Seed Clients
+        // Converted Client from Dr. Arvind Sharma lead
+        $convertedLead = Lead::withoutGlobalScopes()->where('email', 'arvind@apexdiagnostics.org')->first();
+        $clientConverted = Client::withoutGlobalScopes()->firstOrCreate(
+            ['email' => 'arvind@apexdiagnostics.org'],
+            [
+                'lead_id' => $convertedLead?->id,
+                'assigned_to' => $sales3->id,
+                'created_by' => $sales3->id,
+                'name' => 'Dr. Arvind Sharma',
+                'company' => 'Apex Diagnostic Center',
+                'phone' => '+91 98294 65667',
+                'billing_address' => '12, Medical Enclave, Tonk Road, Jaipur, Rajasthan - 302018',
+                'state' => '08',
+                'gstin' => '08AADCA1111A1Z1',
+            ]
+        );
+
+        // Direct Client 1: Rajasthan (Intra-state) owned by Sales1
+        $clientDirectRaj = Client::withoutGlobalScopes()->firstOrCreate(
+            ['email' => 'finance@marwartech.in'],
+            [
+                'lead_id' => null,
+                'assigned_to' => $sales1->id,
+                'created_by' => $sales1->id,
+                'name' => 'Marwar Tech Enterprises',
+                'company' => 'Marwar Tech Enterprises Pvt Ltd',
+                'phone' => '+91 98290 99887',
+                'billing_address' => 'B-14, IT Park, Sitapura, Jaipur, Rajasthan - 302022',
+                'state' => '08',
+                'gstin' => '08ABCDE1234F1Z5',
+            ]
+        );
+
+        // Direct Client 2: Maharashtra (Inter-state) owned by Sales2
+        $clientDirectMh = Client::withoutGlobalScopes()->firstOrCreate(
+            ['email' => 'accounts@mumbaifintech.io'],
+            [
+                'lead_id' => null,
+                'assigned_to' => $sales2->id,
+                'created_by' => $sales2->id,
+                'name' => 'Mumbai FinTech Labs',
+                'company' => 'Mumbai FinTech Labs LLP',
+                'phone' => '+91 98200 11223',
+                'billing_address' => '704, Platina Tower, Bandra Kurla Complex, Mumbai, Maharashtra - 400051',
+                'state' => '27',
+                'gstin' => '27ABCDE5678F1Z2',
+            ]
+        );
+
+        // Direct Client 3: Unregistered buyer (Rajasthan) owned by Sales1
+        $clientUnregistered = Client::withoutGlobalScopes()->firstOrCreate(
+            ['email' => 'artisan@jaipurguild.org'],
+            [
+                'lead_id' => null,
+                'assigned_to' => $sales1->id,
+                'created_by' => $sales1->id,
+                'name' => 'Jaipur Artisan Guild',
+                'company' => 'Jaipur Artisan Guild',
+                'phone' => '+91 98291 44556',
+                'billing_address' => 'Johari Bazaar, Pink City, Jaipur, Rajasthan - 302003',
+                'state' => '08',
+                'gstin' => null,
+            ]
+        );
+
+        // Direct Client 4: For Admin reassignment demo
+        $clientReassignable = Client::withoutGlobalScopes()->firstOrCreate(
+            ['email' => 'info@bikanersweets.com'],
+            [
+                'lead_id' => null,
+                'assigned_to' => $sales2->id,
+                'created_by' => $admin->id,
+                'name' => 'Bikaner Sweets & Spices',
+                'company' => 'Bikaner Sweets & Spices Ltd',
+                'phone' => '+91 98295 77889',
+                'billing_address' => 'Station Road, Bikaner, Rajasthan - 334001',
+                'state' => '08',
+                'gstin' => '08AAACB9999K1Z4',
+            ]
+        );
+
+        // 7. Seed Invoices (Draft & Sent, Intra-state & Inter-state, Mixed Rates)
+        $draftService = app(InvoiceDraftService::class);
+        $sendService = app(InvoiceSendService::class);
+
+        // Invoice 1: Draft Intra-state with Mixed Rates (18% and 5%)
+        $draftIntra = $draftService->createDraft(
+            [
+                'client_id' => $clientDirectRaj->id,
+                'place_of_supply' => '08',
+                'invoice_date' => Carbon::today()->toDateString(),
+                'due_date' => Carbon::today()->addDays(30)->toDateString(),
+            ],
+            [
+                [
+                    'description' => 'Custom Software Architecture & Consulting',
+                    'sac_code' => '998313',
+                    'quantity' => '1.00',
+                    'rate' => '50000.00',
+                    'gst_rate_id' => $gst18->id,
+                ],
+                [
+                    'description' => 'Technical Documentation & User Manual Printing Support',
+                    'sac_code' => '998319',
+                    'quantity' => '2.00',
+                    'rate' => '5000.00',
+                    'gst_rate_id' => $gst5->id,
+                ],
+            ],
+            $sales1
+        );
+
+        // Invoice 2: Draft Inter-state (Maharashtra, 18%)
+        $draftInter = $draftService->createDraft(
+            [
+                'client_id' => $clientDirectMh->id,
+                'place_of_supply' => '27',
+                'invoice_date' => Carbon::today()->toDateString(),
+                'due_date' => Carbon::today()->addDays(30)->toDateString(),
+            ],
+            [
+                [
+                    'description' => 'Cloud Infrastructure Management & Monitoring',
+                    'sac_code' => '998315',
+                    'quantity' => '1.00',
+                    'rate' => '75000.00',
+                    'gst_rate_id' => $gst18->id,
+                ],
+            ],
+            $sales2
+        );
+
+        // Invoice 3: Sent Intra-state Invoice (number allocated sequentially)
+        $invoiceToSent1 = $draftService->createDraft(
+            [
+                'client_id' => $clientConverted->id,
+                'place_of_supply' => '08',
+                'invoice_date' => Carbon::today()->subDays(10)->toDateString(),
+                'due_date' => Carbon::today()->addDays(20)->toDateString(),
+            ],
+            [
+                [
+                    'description' => 'Hospital Management ERP System Implementation - Phase 1',
+                    'sac_code' => '998314',
+                    'quantity' => '1.00',
+                    'rate' => '120000.00',
+                    'gst_rate_id' => $gst18->id,
+                ],
+            ],
+            $sales3
+        );
+        $sendService->send($invoiceToSent1, Carbon::today()->subDays(10)->toDateString());
+
+        // Invoice 4: Sent Inter-state Invoice with Mixed Rates (18% and 0% exempt export/research)
+        $invoiceToSent2 = $draftService->createDraft(
+            [
+                'client_id' => $clientDirectMh->id,
+                'place_of_supply' => '27',
+                'invoice_date' => Carbon::today()->subDays(5)->toDateString(),
+                'due_date' => Carbon::today()->addDays(25)->toDateString(),
+            ],
+            [
+                [
+                    'description' => 'Security Audit & Compliance Assessment',
+                    'sac_code' => '998316',
+                    'quantity' => '1.00',
+                    'rate' => '80000.00',
+                    'gst_rate_id' => $gst18->id,
+                ],
+                [
+                    'description' => 'Open Source Research Advisory',
+                    'sac_code' => '998319',
+                    'quantity' => '1.00',
+                    'rate' => '20000.00',
+                    'gst_rate_id' => $gst0->id,
+                ],
+            ],
+            $sales2
+        );
+        $sendService->send($invoiceToSent2, Carbon::today()->subDays(5)->toDateString());
     }
 }

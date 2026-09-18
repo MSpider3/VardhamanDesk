@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\Auth;
 
-class LeadNoteOwnershipScope implements Scope
+class InvoiceOwnershipScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -24,11 +24,8 @@ class LeadNoteOwnershipScope implements Scope
             return;
         }
 
-        $builder->whereHas('lead', function (Builder $query) use ($user) {
-            $query->where('assigned_to', $user->id)
-                ->orWhereHas('client', function (Builder $clientQuery) use ($user) {
-                    $clientQuery->where('assigned_to', $user->id);
-                });
+        $builder->whereHas('client', function (Builder $query) use ($user) {
+            $query->where('assigned_to', $user->id);
         });
     }
 }

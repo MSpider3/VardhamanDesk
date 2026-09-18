@@ -18,16 +18,16 @@ Mirrors the brief's checkpoints. Updated to include the tables/rules confirmed i
 - [x] Admin can reassign a lead's `assigned_to`
 
 ## Milestone 2 — Clients + Invoices
-- [ ] Migrations: `clients` (with its own `assigned_to`), `gst_rates`, `company_settings`, `invoices`, `invoice_items` (with `sac_code`, `gst_rate_id`), `financial_year_counters`
-- [ ] Seed `gst_rates` (0/5/18/40 — verified, see Milestone 0) and a placeholder `company_settings` row
-- [ ] Lead → Client conversion flow (billing address, state, GSTIN validation, `assigned_to` defaulted from the lead)
-- [ ] Direct client creation with no lead (`lead_id` nullable) — for onboarding existing clients
-- [ ] Admin can reassign a client's `assigned_to` independently of its originating lead
-- [ ] GSTIN validation: format + state-code cross-check against `clients.state`
-- [ ] Invoice creation as **Draft**: line items with per-item SAC + GST rate, live tax calc, no invoice number yet
-- [ ] Draft → Sent action: allocates `invoice_number`/`financial_year`/`sequence_number` via the `FOR UPDATE` counter, locks line items
-- [ ] Draft deletion allowed; Sent/Paid deletion blocked at the policy layer
-- [ ] Seeders: demo clients + invoices covering intra-state, inter-state, and mixed-rate line items
+- [x] Migrations: `clients` (with its own `assigned_to`), `gst_rates`, `company_settings`, `invoices`, `invoice_items` (with `sac_code`, `gst_rate_id`), `financial_year_counters`
+- [x] Seed `gst_rates` (0/5/18/40 — verified, see Milestone 0) and a placeholder `company_settings` row
+- [x] Lead → Client conversion flow (billing address, state, GSTIN validation, `assigned_to` defaulted from the lead)
+- [x] Direct client creation with no lead (`lead_id` nullable) — for onboarding existing clients
+- [x] Admin can reassign a client's `assigned_to` independently of its originating lead
+- [x] GSTIN validation: format + state-code cross-check against `clients.state`
+- [x] Invoice creation as **Draft**: line items with per-item SAC + GST rate, live tax calc, no invoice number yet
+- [x] Draft → Sent action: allocates `invoice_number`/`financial_year`/`sequence_number` via the `FOR UPDATE` counter, locks line items
+- [x] Draft deletion allowed; Sent/Paid deletion blocked at the policy layer
+- [x] Seeders: demo clients + invoices covering intra-state, inter-state, and mixed-rate line items
 
 ## Milestone 3 — Payments, PDF, Dashboard, Tests → Demo
 - [ ] Payment recording (incl. partial); **reject any amount exceeding the remaining balance**
