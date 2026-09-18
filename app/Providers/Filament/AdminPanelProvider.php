@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\FinancialOverviewWidget;
 use App\Filament\Widgets\OverdueFollowUpsWidget;
 use App\Filament\Widgets\TodayFollowUpsWidget;
 use Filament\Http\Middleware\Authenticate;
@@ -38,6 +39,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
+                FinancialOverviewWidget::class,
                 OverdueFollowUpsWidget::class,
                 TodayFollowUpsWidget::class,
             ])
