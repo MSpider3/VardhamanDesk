@@ -4,16 +4,23 @@ namespace App\Filament\Resources\Invoices\Tables;
 
 use App\Enums\IndianState;
 use App\Enums\InvoiceStatus;
+use App\Enums\PaymentMethod;
 use App\Models\Invoice;
 use App\Services\InvoiceSendService;
+use App\Services\RecordPayment;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class InvoicesTable
 {
@@ -70,6 +77,18 @@ class InvoicesTable
                     ->money('INR')
                     ->sortable()
                     ->weight('bold'),
+
+                TextColumn::make('paid_amount')
+                    ->label('Paid (₹)')
+                    ->money('INR')
+                    ->sortable()
+                    ->color('success'),
+
+                TextColumn::make('outstanding_amount')
+                    ->label('Balance (₹)')
+                    ->money('INR')
+                    ->sortable()
+                    ->color(fn (Invoice $record) => (float) $record->outstanding_amount > 0 ? 'warning' : 'gray'),
             ])
             ->filters([
                 SelectFilter::make('status')
@@ -95,6 +114,61 @@ class InvoicesTable
                         } catch (\Throwable $e) {
                             Notification::make()
                                 ->title('Failed to Send Invoice')
+                                ->body($e->getMessage())
+                                ->danger()
+                                ->send();
+                        }
+                    }),
+
+                Action::make('record_payment')
+                    ->label('Record Payment')
+                    ->icon(Heroicon::OutlinedCreditCard)
+                    ->color('success')
+                    ->visible(fn (Invoice $record) => in_array($record->status, [InvoiceStatus::SENT, InvoiceStatus::PARTIALLY_PAID, InvoiceStatus::SENT->value, InvoiceStatus::PARTIALLY_PAID->value], true) && (float) $record->outstanding_amount > 0)
+                    ->form([
+                        Placeholder::make('summary')
+                            ->label('Balance Summary')
+                            ->content(fn (Invoice $record) => sprintf(
+                                'Invoice Total: ₹%s | Already Paid: ₹%s | Remaining Balance: ₹%s',
+                                number_format((float) $record->total, 2),
+                                number_format((float) $record->paid_amount, 2),
+                                number_format((float) $record->outstanding_amount, 2)
+                            )),
+
+                        TextInput::make('amount')
+                            ->label('Payment Amount (₹)')
+                            ->numeric()
+                            ->default(fn (Invoice $record) => (float) $record->outstanding_amount)
+                            ->minValue(0.01)
+                            ->maxValue(fn (Invoice $record) => (float) $record->outstanding_amount)
+                            ->required(),
+
+                        Select::make('method')
+                            ->label('Payment Method')
+                            ->options(collect(PaymentMethod::cases())->mapWithKeys(fn ($case) => [$case->value => $case->label()]))
+                            ->default(PaymentMethod::BANK_TRANSFER->value)
+                            ->required(),
+
+                        DatePicker::make('payment_date')
+                            ->label('Payment Date')
+                            ->default(now()->toDateString())
+                            ->required(),
+
+                        TextInput::make('reference_note')
+                            ->label('Reference / Transaction Note (Optional)')
+                            ->placeholder('e.g. UTR12345678, Chq #00124'),
+                    ])
+                    ->action(function (Invoice $record, array $data, RecordPayment $service) {
+                        try {
+                            $service->execute($record, $data, Auth::user());
+                            Notification::make()
+                                ->title('Payment Recorded Successfully')
+                                ->body('Invoice balance and status updated.')
+                                ->success()
+                                ->send();
+                        } catch (\Throwable $e) {
+                            Notification::make()
+                                ->title('Failed to Record Payment')
                                 ->body($e->getMessage())
                                 ->danger()
                                 ->send();
