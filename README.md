@@ -163,3 +163,17 @@ To perform the complete end-to-end client demonstration:
    - In **Invoices**: Attempt to delete the `Paid` or `Sent` invoice. Verify deletion is permanently blocked.
    - In **Clients**: Reassign a client from Sales Rep 1 to Sales Rep 2.
    - Log in as **Sales Rep 2 (`sales2@vardhamandesk.local`)**: Verify the client, invoices, and payment records now appear in Sales 2's panel, and are no longer accessible to Sales 1.
+
+---
+
+## Submission Checklist & Prompt Verification
+
+This project satisfies all requirements specified in the project prompt:
+
+| Submission Requirement | Status | Evidence / Location |
+| :--- | :---: | :--- |
+| **1. GitHub Repo with regular, meaningful commits** | ✅ Complete | Repository history features 15+ descriptive, milestone-by-milestone commits (`git log --oneline`). |
+| **2. README with setup steps & instant demo seeders** | ✅ Complete | See [Prerequisites & Setup](#prerequisites--database-configuration) and [Demo Credentials](#demo-credentials-development--review). |
+| **3. Tests covering GST, numbering, and permissions** | ✅ Complete | **103 passing Pest tests** across `tests/Feature/` covering GST calculation (`InvoiceDraftAndCalculationTest`), atomic numbering (`InvoiceSendAndNumberingTest`), and role permissions (`PaymentAuthorizationTest`, `LeadAndClientAuthorizationTest`, `SecurityHardeningTest`). |
+| **4. Assumptions and incomplete items note** | ✅ Complete | Fully documented in [`docs/05-assumptions-and-open-questions.md`](./docs/05-assumptions-and-open-questions.md) (e.g. out-of-scope: email dispatching, credit notes, E-invoicing; verified GST slabs per CBIC Notification 9/2025). |
+| **5. AI Chat History for this project** | ✅ Complete | Documented and indexed milestone-by-milestone in [`docs/ai-history/INDEX.md`](./docs/ai-history/INDEX.md). |
