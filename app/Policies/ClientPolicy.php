@@ -64,4 +64,20 @@ class ClientPolicy
     {
         return $user->isAdmin();
     }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     */
+    public function forceDelete(User $user, Client $client): bool
+    {
+        return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore(User $user, Client $client): bool
+    {
+        return $user->isAdmin();
+    }
 }

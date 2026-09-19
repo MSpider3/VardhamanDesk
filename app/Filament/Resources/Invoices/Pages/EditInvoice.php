@@ -23,7 +23,7 @@ class EditInvoice extends EditRecord
         $items = $data['items'] ?? [];
         unset($data['items']);
 
-        return $draftService->updateDraft($record, $data, $items);
+        return $draftService->updateDraft($record, $data, $items, auth()->user());
     }
 
     protected function getHeaderActions(): array

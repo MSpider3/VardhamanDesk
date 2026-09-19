@@ -115,14 +115,14 @@
     <table class="header-table" style="margin-bottom: 15px;">
         <tr>
             <td style="width: 55%; vertical-align: top;">
-                @if($company && $company->logo_path && file_exists(public_path($company->logo_path)))
-                    <img src="{{ public_path($company->logo_path) }}" style="max-height: 50px; margin-bottom: 5px;">
+                @if(!empty($safeLogoPath) && file_exists($safeLogoPath))
+                    <img src="{{ $safeLogoPath }}" style="max-height: 50px; margin-bottom: 5px;">
                 @endif
                 <div style="font-size: 16px; font-weight: bold; color: #0f172a;">
                     {{ $company?->company_name ?? 'Vardhaman Infotech Solutions' }}
                 </div>
                 <div class="muted" style="margin-top: 4px; font-size: 10px;">
-                    {!! nl2br(e($company?->address ?? 'Jaipur, Rajasthan - 302017')) !!}
+                    {!! nl2br(e(strip_tags($company?->address ?? 'Jaipur, Rajasthan - 302017'))) !!}
                 </div>
                 <div style="margin-top: 4px; font-size: 10px;">
                     <span class="bold">GSTIN:</span> {{ $company?->gstin ?? '08AABCV1234F1Z9' }} | 
@@ -181,7 +181,7 @@
                             @if($invoice->client?->company)
                                 <div class="muted">{{ $invoice->client->company }}</div>
                             @endif
-                            <div style="margin-top: 4px;">{!! nl2br(e($invoice->client?->billing_address ?? '')) !!}</div>
+                            <div style="margin-top: 4px;">{!! nl2br(e(strip_tags($invoice->client?->billing_address ?? ''))) !!}</div>
                         </td>
                         <td style="width: 40%; vertical-align: top;">
                             <div><span class="bold">State:</span> {{ $invoice->client?->state?->stateName() ?? $invoice->client?->state }} (Code: {{ $invoice->client?->state?->code() ?? $invoice->client?->state }})</div>
@@ -225,7 +225,7 @@
                 <tr>
                     <td class="text-center">{{ $index + 1 }}</td>
                     <td>
-                        <span class="bold">{{ $item->description }}</span>
+                        <span class="bold">{{ strip_tags($item->description ?? '') }}</span>
                     </td>
                     <td class="text-center">{{ $item->sac_code }}</td>
                     <td class="text-right">{{ number_format((float)$item->quantity, 2) }}</td>
@@ -286,7 +286,7 @@
                                 <tr>
                                     <td>{{ $payment->payment_date?->format('d/m/Y') }}</td>
                                     <td>{{ $payment->method->label() }}</td>
-                                    <td class="muted">{{ $payment->reference_note ?: '-' }}</td>
+                                    <td class="muted">{{ strip_tags($payment->reference_note ?? '') ?: '-' }}</td>
                                     <td class="text-right bold">₹{{ number_format((float)$payment->amount, 2) }}</td>
                                 </tr>
                             @endforeach

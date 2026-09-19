@@ -22,10 +22,20 @@ class InvoicePdfService
 
         $company = CompanySetting::current();
 
+        $safeLogoPath = null;
+        if ($company?->logo_path) {
+            $realBase = realpath(public_path());
+            $realLogo = realpath(public_path($company->logo_path));
+            if ($realBase && $realLogo && str_starts_with($realLogo, $realBase) && is_file($realLogo)) {
+                $safeLogoPath = $realLogo;
+            }
+        }
+
         /** @var \Barryvdh\DomPDF\PDF $pdf */
         $pdf = Pdf::loadView('invoices.pdf', [
             'invoice' => $invoice,
             'company' => $company,
+            'safeLogoPath' => $safeLogoPath,
         ]);
 
         $pdf->setPaper('a4', 'portrait');

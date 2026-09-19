@@ -16,4 +16,13 @@ class EditUser extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        if (auth()->id() === $this->record->id) {
+            $data['is_active'] = true;
+        }
+
+        return $data;
+    }
 }

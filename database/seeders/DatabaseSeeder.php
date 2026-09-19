@@ -26,13 +26,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->isProduction()) {
+            $this->command?->error('DatabaseSeeder must not run in production.');
+
+            return;
+        }
+
+        $defaultPassword = Hash::make(env('SEED_DEFAULT_PASSWORD', 'password'));
+
         // 1. Create Admin user
         $admin = User::firstOrCreate(
             ['email' => 'admin@vardhamandesk.local'],
             [
                 'name' => 'Admin User',
-                'password' => Hash::make('password'),
+                'password' => $defaultPassword,
                 'role' => UserRole::ADMIN,
+                'is_active' => true,
                 'email_verified_at' => now(),
             ]
         );
@@ -42,8 +51,9 @@ class DatabaseSeeder extends Seeder
             ['email' => 'sales@vardhamandesk.local'],
             [
                 'name' => 'Aarav Sharma (Sales A)',
-                'password' => Hash::make('password'),
+                'password' => $defaultPassword,
                 'role' => UserRole::SALES,
+                'is_active' => true,
                 'email_verified_at' => now(),
             ]
         );
@@ -52,8 +62,9 @@ class DatabaseSeeder extends Seeder
             ['email' => 'sales1@vardhamandesk.local'],
             [
                 'name' => 'Aarav Sharma',
-                'password' => Hash::make('password'),
+                'password' => $defaultPassword,
                 'role' => UserRole::SALES,
+                'is_active' => true,
                 'email_verified_at' => now(),
             ]
         );
@@ -62,8 +73,9 @@ class DatabaseSeeder extends Seeder
             ['email' => 'sales2@vardhamandesk.local'],
             [
                 'name' => 'Priya Patel',
-                'password' => Hash::make('password'),
+                'password' => $defaultPassword,
                 'role' => UserRole::SALES,
+                'is_active' => true,
                 'email_verified_at' => now(),
             ]
         );
@@ -72,8 +84,9 @@ class DatabaseSeeder extends Seeder
             ['email' => 'sales3@vardhamandesk.local'],
             [
                 'name' => 'Rohan Gupta',
-                'password' => Hash::make('password'),
+                'password' => $defaultPassword,
                 'role' => UserRole::SALES,
+                'is_active' => true,
                 'email_verified_at' => now(),
             ]
         );

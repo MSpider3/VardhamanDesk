@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Widgets\FinancialOverviewWidget;
 use App\Filament\Widgets\OverdueFollowUpsWidget;
 use App\Filament\Widgets\TodayFollowUpsWidget;
+use App\Http\Middleware\SecurityHeaders;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -53,6 +54,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                SecurityHeaders::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

@@ -97,7 +97,7 @@ class RecordPayment
                 'amount' => number_format($amount, 2, '.', ''),
                 'payment_date' => $paymentDate,
                 'method' => $method,
-                'reference_note' => $data['reference_note'] ?? null,
+                'reference_note' => ! empty($data['reference_note']) ? strip_tags((string) $data['reference_note']) : null,
                 'recorded_by' => $actingUser->id,
             ]);
 

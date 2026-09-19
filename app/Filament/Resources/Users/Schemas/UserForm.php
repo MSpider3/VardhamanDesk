@@ -3,9 +3,12 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use App\Enums\UserRole;
+use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 
 class UserForm
 {
@@ -28,11 +31,27 @@ class UserForm
                     ])
                     ->required()
                     ->default(UserRole::SALES->value),
+                Toggle::make('is_active')
+                    ->label('Active Account')
+                    ->default(true)
+                    ->visible(fn (): bool => (bool) Auth::user()?->isAdmin())
+                    ->disabled(fn (?User $record): bool => $record?->id === Auth::id())
+                    ->helperText(fn (?User $record): ?string => $record?->id === Auth::id() ? 'You cannot deactivate your own account.' : null),
                 TextInput::make('password')
                     ->password()
+                    ->nullable()
                     ->required(fn (string $context): bool => $context === 'create')
                     ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->maxLength(255),
+                    ->minLength(8)
+                    ->rules(['regex:/[A-Z]/', 'regex:/[0-9]/'])
+                    ->maxLength(255)
+                    ->same('password_confirmation'),
+                TextInput::make('password_confirmation')
+                    ->password()
+                    ->label('Confirm Password')
+                    ->nullable()
+                    ->required(fn (string $context): bool => $context === 'create')
+                    ->dehydrated(false),
             ]);
     }
 }

@@ -113,7 +113,9 @@ class PaymentsRelationManager extends RelationManager
 
                         TextInput::make('reference_note')
                             ->label('Reference / Transaction Note (Optional)')
-                            ->placeholder('e.g. UTR12345678, Chq #00124'),
+                            ->placeholder('e.g. UTR12345678, Chq #00124')
+                            ->maxLength(100)
+                            ->rules(['nullable', 'regex:/^[A-Za-z0-9\/\-\s#.,:]+$/']),
                     ])
                     ->action(function (array $data, RecordPayment $service) use ($invoice) {
                         try {

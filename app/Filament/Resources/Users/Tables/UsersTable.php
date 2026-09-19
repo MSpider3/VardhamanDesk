@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -27,6 +28,9 @@ class UsersTable
                         UserRole::SALES => 'info',
                         default => 'gray',
                     }),
+                IconColumn::make('is_active')
+                    ->label('Active')
+                    ->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

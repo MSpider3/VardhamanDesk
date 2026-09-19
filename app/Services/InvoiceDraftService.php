@@ -92,7 +92,7 @@ class InvoiceDraftService
      * @param  array<string, mixed>  $data
      * @param  array<int, array<string, mixed>>  $itemsData
      */
-    public function updateDraft(Invoice $invoice, array $data, array $itemsData): Invoice
+    public function updateDraft(Invoice $invoice, array $data, array $itemsData, ?User $actor = null): Invoice
     {
         $isDraft = $invoice->status instanceof InvoiceStatus
             ? $invoice->status === InvoiceStatus::DRAFT
@@ -114,13 +114,13 @@ class InvoiceDraftService
             ? Carbon::parse($data['due_date'])
             : (! empty($data['invoice_date']) ? Carbon::parse($data['invoice_date'])->addDays(30) : $invoice->due_date);
 
+        $calc = $this->calculationService->calculate($posCode, $itemsData);
+
         if (! empty($data['client_id']) && (int) $data['client_id'] !== (int) $invoice->client_id) {
             $targetClient = Client::withoutGlobalScopes()->findOrFail($data['client_id']);
-            if (Auth::check()) {
-                $user = Auth::user();
-                if (! $user->isAdmin() && $targetClient->assigned_to !== $user->id) {
-                    throw new AuthorizationException('You are not authorized to assign this invoice to another client.');
-                }
+            $actingUser = $actor ?? Auth::user();
+            if ($actingUser && ! $actingUser->isAdmin() && $targetClient->assigned_to !== $actingUser->id) {
+                throw new AuthorizationException('You are not authorized to assign this invoice to another client.');
             }
         }
 

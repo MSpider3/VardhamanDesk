@@ -50,3 +50,4 @@ ehthumbs.db
 database/database.sqlite*
 /auth.json
 /public/fonts-manifest.dev.json
+plan.md

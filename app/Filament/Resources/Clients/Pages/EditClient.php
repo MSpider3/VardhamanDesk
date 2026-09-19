@@ -16,8 +16,10 @@ class EditClient extends EditRecord
     {
         return [
             DeleteAction::make(),
-            ForceDeleteAction::make(),
-            RestoreAction::make(),
+            ForceDeleteAction::make()
+                ->visible(fn () => auth()->user()?->isAdmin()),
+            RestoreAction::make()
+                ->visible(fn () => auth()->user()?->isAdmin()),
         ];
     }
 }
