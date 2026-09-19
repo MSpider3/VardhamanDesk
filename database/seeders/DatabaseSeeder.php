@@ -37,7 +37,17 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 2. Create 3 Sales users
+        // 2. Create Sales users (sales@vardhamandesk.local alias for demo walkthrough, plus sales1-3)
+        $salesMain = User::firstOrCreate(
+            ['email' => 'sales@vardhamandesk.local'],
+            [
+                'name' => 'Aarav Sharma (Sales A)',
+                'password' => Hash::make('password'),
+                'role' => UserRole::SALES,
+                'email_verified_at' => now(),
+            ]
+        );
+
         $sales1 = User::firstOrCreate(
             ['email' => 'sales1@vardhamandesk.local'],
             [

@@ -83,6 +83,7 @@ VardhamanDesk is an internal sales pipeline tracking, GST billing, and payment l
 | Role | Name | Email | Password | Scope Visibility |
 | :--- | :--- | :--- | :--- | :--- |
 | **Admin** | Admin User | `admin@vardhamandesk.local` | `password` | Global company-wide visibility; can reassign Leads & Clients |
+| **Sales Rep (Sales A)** | Aarav Sharma | `sales@vardhamandesk.local` | `password` | Scoped to assigned Leads, Clients, Invoices, and Payments |
 | **Sales Rep 1** | Aarav Sharma | `sales1@vardhamandesk.local` | `password` | Scoped to assigned Leads, Clients, Invoices, and Payments |
 | **Sales Rep 2** | Priya Patel | `sales2@vardhamandesk.local` | `password` | Scoped to assigned Leads, Clients, Invoices, and Payments |
 | **Sales Rep 3** | Rohan Gupta | `sales3@vardhamandesk.local` | `password` | Scoped to assigned Leads, Clients, Invoices, and Payments |
