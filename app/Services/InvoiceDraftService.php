@@ -10,6 +10,8 @@ use App\Models\InvoiceItem;
 use App\Models\User;
 use Carbon\Carbon;
 use DomainException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class InvoiceDraftService
@@ -28,6 +30,10 @@ class InvoiceDraftService
     {
         $clientId = $data['client_id'];
         $client = Client::withoutGlobalScopes()->findOrFail($clientId);
+
+        if (! $creator->isAdmin() && $client->assigned_to !== $creator->id) {
+            throw new AuthorizationException('You are not authorized to create invoices for this client.');
+        }
 
         $pos = $data['place_of_supply'] ?? $client->state;
         $posState = IndianState::fromCodeOrName($pos);
@@ -108,7 +114,15 @@ class InvoiceDraftService
             ? Carbon::parse($data['due_date'])
             : (! empty($data['invoice_date']) ? Carbon::parse($data['invoice_date'])->addDays(30) : $invoice->due_date);
 
-        $calc = $this->calculationService->calculate($posCode, $itemsData);
+        if (! empty($data['client_id']) && (int) $data['client_id'] !== (int) $invoice->client_id) {
+            $targetClient = Client::withoutGlobalScopes()->findOrFail($data['client_id']);
+            if (Auth::check()) {
+                $user = Auth::user();
+                if (! $user->isAdmin() && $targetClient->assigned_to !== $user->id) {
+                    throw new AuthorizationException('You are not authorized to assign this invoice to another client.');
+                }
+            }
+        }
 
         return DB::transaction(function () use ($invoice, $data, $posCode, $invoiceDate, $dueDate, $calc) {
             $invoice->client_id = $data['client_id'] ?? $invoice->client_id;

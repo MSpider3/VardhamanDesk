@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\InvoiceStatus;
 use App\Models\Client;
 use App\Models\User;
 
@@ -44,6 +45,15 @@ class ClientPolicy
      */
     public function delete(User $user, Client $client): bool
     {
+        $hasLockedInvoices = $client->invoices()
+            ->where('status', '!=', InvoiceStatus::DRAFT)
+            ->where('status', '!=', InvoiceStatus::DRAFT->value)
+            ->exists();
+
+        if ($hasLockedInvoices) {
+            return false;
+        }
+
         return $user->isAdmin() || $client->assigned_to === $user->id;
     }
 

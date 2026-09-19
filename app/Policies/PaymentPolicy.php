@@ -24,7 +24,7 @@ class PaymentPolicy
             return true;
         }
 
-        $client = $payment->invoice?->client;
+        $client = $payment->invoice?->client()->withTrashed()->first();
 
         return $client && $client->assigned_to === $user->id;
     }

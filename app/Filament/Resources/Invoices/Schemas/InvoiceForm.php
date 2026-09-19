@@ -105,6 +105,7 @@ class InvoiceForm
                                     ->label('Qty')
                                     ->numeric()
                                     ->default(1)
+                                    ->minValue(0.01)
                                     ->required()
                                     ->live(onBlur: true)
                                     ->columnSpan(2),
@@ -112,6 +113,7 @@ class InvoiceForm
                                 TextInput::make('rate')
                                     ->label('Unit Rate (₹)')
                                     ->numeric()
+                                    ->minValue(0.01)
                                     ->required()
                                     ->live(onBlur: true)
                                     ->columnSpan(2),

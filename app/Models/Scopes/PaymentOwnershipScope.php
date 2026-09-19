@@ -24,8 +24,10 @@ class PaymentOwnershipScope implements Scope
             return;
         }
 
-        $builder->whereHas('invoice.client', function (Builder $query) use ($user) {
-            $query->where('assigned_to', $user->id);
+        $builder->whereHas('invoice', function (Builder $invQuery) use ($user) {
+            $invQuery->whereHas('client', function (Builder $clientQuery) use ($user) {
+                $clientQuery->withTrashed()->where('assigned_to', $user->id);
+            });
         });
     }
 }

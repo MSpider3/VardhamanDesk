@@ -25,7 +25,7 @@ class InvoiceOwnershipScope implements Scope
         }
 
         $builder->whereHas('client', function (Builder $query) use ($user) {
-            $query->where('assigned_to', $user->id);
+            $query->withTrashed()->where('assigned_to', $user->id);
         });
     }
 }

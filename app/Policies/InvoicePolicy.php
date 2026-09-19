@@ -25,7 +25,7 @@ class InvoicePolicy
             return true;
         }
 
-        $client = $invoice->client;
+        $client = $invoice->client()->withTrashed()->first();
 
         return $client && $client->assigned_to === $user->id;
     }
@@ -56,7 +56,7 @@ class InvoicePolicy
             return true;
         }
 
-        $client = $invoice->client;
+        $client = $invoice->client()->withTrashed()->first();
 
         return $client && $client->assigned_to === $user->id;
     }
@@ -79,7 +79,7 @@ class InvoicePolicy
             return true;
         }
 
-        $client = $invoice->client;
+        $client = $invoice->client()->withTrashed()->first();
 
         return $client && $client->assigned_to === $user->id;
     }
@@ -108,7 +108,7 @@ class InvoicePolicy
             return true;
         }
 
-        $client = $invoice->client;
+        $client = $invoice->client()->withTrashed()->first();
 
         return $client && $client->assigned_to === $user->id;
     }

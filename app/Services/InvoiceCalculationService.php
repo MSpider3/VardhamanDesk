@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\IndianState;
 use App\Models\CompanySetting;
 use App\Models\GstRate;
+use DomainException;
 
 class InvoiceCalculationService
 {
@@ -45,6 +46,15 @@ class InvoiceCalculationService
         foreach ($items as $item) {
             $qty = (float) ($item['quantity'] ?? 0);
             $rate = (float) ($item['rate'] ?? 0);
+
+            if ($qty <= 0) {
+                throw new DomainException('Line item quantity must be greater than zero.');
+            }
+
+            if ($rate < 0) {
+                throw new DomainException('Line item unit rate cannot be negative.');
+            }
+
             $amount = round($qty * $rate, 2);
 
             $gstRateId = $item['gst_rate_id'] ?? null;

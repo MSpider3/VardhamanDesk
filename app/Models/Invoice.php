@@ -56,8 +56,27 @@ class Invoice extends Model
                 : $origStatus === InvoiceStatus::DRAFT->value;
 
             if (! $wasDraft) {
+                $currentStatus = $invoice->status instanceof InvoiceStatus
+                    ? $invoice->status
+                    : InvoiceStatus::tryFrom((string) $invoice->status);
+
+                if ($currentStatus === InvoiceStatus::DRAFT) {
+                    throw new DomainException('Cannot transition a locked (sent/paid) invoice back to draft status.');
+                }
+
+                $wasPaid = $origStatus instanceof InvoiceStatus
+                    ? $origStatus === InvoiceStatus::PAID
+                    : $origStatus === InvoiceStatus::PAID->value;
+
+                if ($wasPaid && $currentStatus !== InvoiceStatus::PAID) {
+                    throw new DomainException('A fully paid invoice cannot transition to another status.');
+                }
+
                 $financialFields = [
                     'client_id',
+                    'invoice_number',
+                    'financial_year',
+                    'sequence_number',
                     'place_of_supply',
                     'invoice_date',
                     'subtotal',
