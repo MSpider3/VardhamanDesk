@@ -228,3 +228,37 @@ test('multiple drafts sent in sequence never collide and increment sequence sequ
     $counter = FinancialYearCounter::where('financial_year', '2026-27')->first();
     expect($counter->last_sequence)->toBe(5);
 });
+
+test('Item 9: backdating invoice into already-closed financial year is rejected while current or future FY sends successfully', function () {
+    FinancialYearCounter::query()->delete();
+
+    // 1. Send an invoice in FY 2026-27 (establishing 2026-27 as the highest active FY)
+    $draftCurrent = $this->draftService->createDraft(
+        ['client_id' => $this->client->id, 'invoice_date' => '2026-06-01'],
+        [['description' => 'Current Year Service', 'quantity' => 1, 'rate' => 1000, 'gst_rate_id' => $this->gst18->id]],
+        $this->sales1
+    );
+    $sentCurrent = $this->sendService->send($draftCurrent, '2026-06-01');
+    expect($sentCurrent->financial_year)->toBe('2026-27');
+
+    // 2. Attempt to send a draft backdated into FY 2025-26 -> MUST be rejected with clear DomainException
+    $draftBackdated = $this->draftService->createDraft(
+        ['client_id' => $this->client->id, 'invoice_date' => '2026-03-15'],
+        [['description' => 'Backdated Service', 'quantity' => 1, 'rate' => 1000, 'gst_rate_id' => $this->gst18->id]],
+        $this->sales1
+    );
+
+    expect(fn () => $this->sendService->send($draftBackdated, '2026-03-15'))
+        ->toThrow(DomainException::class, "This invoice's date falls in an already-closed financial year (2025-26); update the invoice date to fall within 2026-27, or contact an admin.");
+
+    // 3. Send a draft forward-dated into a future FY (2027-28) -> MUST succeed (does not over-block)
+    $draftFuture = $this->draftService->createDraft(
+        ['client_id' => $this->client->id, 'invoice_date' => '2027-04-10'],
+        [['description' => 'Future Service', 'quantity' => 1, 'rate' => 1000, 'gst_rate_id' => $this->gst18->id]],
+        $this->sales1
+    );
+
+    $sentFuture = $this->sendService->send($draftFuture, '2027-04-10');
+    expect($sentFuture->financial_year)->toBe('2027-28');
+    expect($sentFuture->invoice_number)->toBe('VI/2027-28/0001');
+});

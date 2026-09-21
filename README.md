@@ -6,7 +6,7 @@ VardhamanDesk is an internal sales pipeline tracking, GST billing, and payment l
 
 ## Technology Stack
 
-- **PHP**: 8.3+ (tested on PHP 8.5.10 CLI with `pdo_mysql`, `mbstring`, `curl`, `xml`, `zip`, `bcmath`)
+- **PHP**: 8.4+ (tested on PHP 8.5.10 CLI with `pdo_mysql`, `mbstring`, `curl`, `xml`, `zip`, `bcmath`)
 - **Framework**: Laravel 13.32+
 - **Admin UI**: Filament 5.8+ (Livewire 4.4+)
 - **Database**: MySQL 8.0+
@@ -19,7 +19,7 @@ VardhamanDesk is an internal sales pipeline tracking, GST billing, and payment l
 ## Prerequisites & Database Configuration
 
 1. **PHP & Composer**:
-   Ensure PHP 8.3+ and Composer 2.x are installed.
+   Ensure PHP 8.4+ and Composer 2.x are installed.
 2. **MySQL 8 Database**:
    A running MySQL 8 instance on `127.0.0.1:3306`.
    For example, start a Docker container:
@@ -33,7 +33,24 @@ VardhamanDesk is an internal sales pipeline tracking, GST billing, and payment l
 
 ---
 
-## Local Installation & Quick Start
+## Production Setup & Bootstrapping
+
+In production (`APP_ENV=production`), `DatabaseSeeder::run()` refuses to run to prevent overwriting or polluting production data. Follow this required sequence on any fresh production deployment:
+
+1. **Run migrations without seeders**:
+   ```bash
+   php artisan migrate --force
+   ```
+
+2. **Bootstrap the initial production data (Admin account, GST rates, company settings)**:
+   ```bash
+   php artisan app:bootstrap
+   ```
+   *Note: This command is fully idempotent and safe to execute repeatedly or during deployment scripts. It creates the initial verified Admin account with active status and panel access, populates standard GST rates (0%, 5%, 18%, 40%), and establishes initial company settings. You may also pass custom options: `--name="Admin Name" --email="admin@example.com" --password="SecurePassword123!"`.*
+
+---
+
+## Local Development Installation & Quick Start
 
 1. **Clone repository and install PHP dependencies**:
    ```bash
@@ -55,15 +72,21 @@ VardhamanDesk is an internal sales pipeline tracking, GST billing, and payment l
    DB_PASSWORD=secret
    ```
 
-3. **Run database migrations and realistic demo seeders**:
+3. **Run database migrations and realistic demo seeders (Development only)**:
    ```bash
    php artisan migrate:fresh --seed
    ```
 
-4. **Run the automated test suite**:
-   ```bash
-   ./vendor/bin/pest
-   ```
+4. **Run the automated test suites**:
+   - **Fast SQLite suite (in-memory)**:
+     ```bash
+     ./vendor/bin/pest
+     ```
+   - **Target MySQL suite (required for production sign-off)**:
+     ```bash
+     composer test:mysql
+     ```
+     > **Note on Database Engines**: VardhamanDesk deploys to MySQL 8+. While SQLite provides instant local test feedback, MySQL enforces strict SQL mode, real row locks (`SELECT ... FOR UPDATE`), and true aggregate clauses. Always run `composer test:mysql` for sign-off.
 
 5. **Run code style checks**:
    ```bash

@@ -6,7 +6,7 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "barryvdh/laravel-dompdf": "^3.1",
         "filament/filament": "^5.0",
         "laravel/framework": "^13.17",
@@ -51,6 +51,10 @@
         "test": [
             "@php artisan config:clear --ansi @no_additional_args",
             "@php artisan test"
+        ],
+        "test:mysql": [
+            "@php artisan config:clear --ansi @no_additional_args",
+            "./vendor/bin/pest --configuration=phpunit.mysql.xml"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

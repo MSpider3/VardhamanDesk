@@ -20,6 +20,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
 class InvoicesTable
@@ -27,6 +28,11 @@ class InvoicesTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query
+                ->select('invoices.*')
+                ->withSum('payments as paid_amount', 'amount')
+                ->selectRaw('(invoices.total - COALESCE((SELECT SUM(payments.amount) FROM payments WHERE payments.invoice_id = invoices.id), 0)) as outstanding_amount')
+            )
             ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('invoice_number')

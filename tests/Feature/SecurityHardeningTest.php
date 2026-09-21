@@ -1,11 +1,14 @@
 <?php
 
 use App\Enums\InvoiceStatus;
+use App\Enums\LeadStatus;
 use App\Models\Client;
 use App\Models\CompanySetting;
 use App\Models\GstRate;
 use App\Models\Invoice;
+use App\Models\Lead;
 use App\Models\User;
+use App\Services\ClientService;
 use App\Services\InvoiceCalculationService;
 use App\Services\InvoiceDraftService;
 use App\Services\InvoicePdfService;
@@ -196,4 +199,53 @@ test('VULN-05: sales user cannot reassign client at model level', function () {
     $this->actingAs($this->admin);
     $client->update(['assigned_to' => $this->sales2->id]);
     expect($client->fresh()->assigned_to)->toBe($this->sales2->id);
+});
+
+test('Item 10: CSP header is tightened and does not contain open https: wildcard source', function () {
+    $response = $this->actingAs($this->admin)->get('/admin');
+
+    $csp = $response->headers->get('Content-Security-Policy');
+    expect($csp)->not->toBeNull();
+    // Must NOT contain bare https:
+    expect($csp)->not->toMatch('/(^|\s)https:($|[\s;])/');
+    // Must contain scoped directives
+    expect($csp)->toContain("default-src 'self'");
+    expect($csp)->toContain("script-src 'self'");
+    expect($csp)->toContain("style-src 'self'");
+});
+
+test('VULN-06: sales user cannot convert a lead assigned to another sales user (IDOR)', function () {
+    $leadOfSales2 = Lead::factory()->create([
+        'assigned_to' => $this->sales2->id,
+        'status' => LeadStatus::QUALIFIED,
+    ]);
+
+    $clientService = new ClientService;
+
+    expect(fn () => $clientService->convertLeadToClient($leadOfSales2, [
+        'billing_address' => '123 Business Way, Jaipur',
+        'state' => '08',
+    ], $this->sales1))->toThrow(AuthorizationException::class, 'You are not authorized to convert this lead.');
+
+    // Admin CAN convert
+    $client = $clientService->convertLeadToClient($leadOfSales2->fresh(), [
+        'billing_address' => '123 Business Way, Jaipur',
+        'state' => '08',
+    ], $this->admin);
+
+    expect($client)->toBeInstanceOf(Client::class)
+        ->and($client->lead_id)->toBe($leadOfSales2->id);
+});
+
+test('HTTP security headers (X-Frame-Options, X-Content-Type-Options, Referrer-Policy, HSTS) are strictly configured', function () {
+    $response = $this->actingAs($this->admin)->get('/admin');
+
+    expect($response->headers->get('X-Frame-Options'))->toBe('DENY')
+        ->and($response->headers->get('X-Content-Type-Options'))->toBe('nosniff')
+        ->and($response->headers->get('Referrer-Policy'))->toBe('same-origin')
+        ->and($response->headers->get('Permissions-Policy'))->toContain('geolocation=(), microphone=()');
+
+    // Secure request receives HSTS
+    $secureResponse = $this->actingAs($this->admin)->get('https://localhost/admin');
+    expect($secureResponse->headers->get('Strict-Transport-Security'))->toBe('max-age=31536000; includeSubDomains');
 });

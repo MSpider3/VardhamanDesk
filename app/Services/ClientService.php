@@ -9,6 +9,8 @@ use App\Models\Lead;
 use App\Models\User;
 use App\Rules\ValidGstin;
 use DomainException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -21,16 +23,20 @@ class ClientService
      */
     public function convertLeadToClient(Lead $lead, array $clientData, User $actingUser): Client
     {
+        if ($actingUser->isSales() && $lead->assigned_to !== $actingUser->id) {
+            throw new AuthorizationException('You are not authorized to convert this lead.');
+        }
+
         $currentStatus = $lead->status instanceof LeadStatus
             ? $lead->status
             : LeadStatus::tryFrom($lead->status);
 
-        if ($currentStatus !== LeadStatus::QUALIFIED) {
-            throw new DomainException('Only qualified leads can be converted to clients.');
+        if ($currentStatus === LeadStatus::CONVERTED || $lead->client()->exists()) {
+            throw new DomainException('This lead has already been converted.');
         }
 
-        if ($lead->client()->exists() || $currentStatus === LeadStatus::CONVERTED) {
-            throw new DomainException('This lead has already been converted.');
+        if ($currentStatus !== LeadStatus::QUALIFIED) {
+            throw new DomainException('Only qualified leads can be converted to clients.');
         }
 
         $state = $clientData['state'] ?? null;
@@ -43,27 +49,55 @@ class ClientService
             }
         }
 
-        return DB::transaction(function () use ($lead, $clientData, $actingUser, $state, $gstin) {
-            $resolvedState = IndianState::fromCodeOrName($state)?->value ?? $state;
+        try {
+            return DB::transaction(function () use ($lead, $clientData, $actingUser, $state, $gstin) {
+                /** @var Lead $lockedLead */
+                $lockedLead = Lead::where('id', $lead->id)->lockForUpdate()->firstOrFail();
 
-            $client = Client::create([
-                'lead_id' => $lead->id,
-                'assigned_to' => $lead->assigned_to,
-                'created_by' => $actingUser->id,
-                'name' => $clientData['name'] ?? $lead->name,
-                'company' => $clientData['company'] ?? $lead->company,
-                'phone' => $clientData['phone'] ?? $lead->phone,
-                'email' => $clientData['email'] ?? $lead->email,
-                'billing_address' => $clientData['billing_address'],
-                'state' => $resolvedState,
-                'gstin' => $gstin,
-            ]);
+                if ($actingUser->isSales() && $lockedLead->assigned_to !== $actingUser->id) {
+                    throw new AuthorizationException('You are not authorized to convert this lead.');
+                }
 
-            $lead->status = LeadStatus::CONVERTED;
-            $lead->save();
+                $lockedStatus = $lockedLead->status instanceof LeadStatus
+                    ? $lockedLead->status
+                    : LeadStatus::tryFrom($lockedLead->status);
 
-            return $client;
-        });
+                if ($lockedLead->client()->exists() || $lockedStatus === LeadStatus::CONVERTED) {
+                    throw new DomainException('This lead has already been converted.');
+                }
+
+                if ($lockedStatus !== LeadStatus::QUALIFIED) {
+                    throw new DomainException('Only qualified leads can be converted to clients.');
+                }
+
+                // Mark lead converted under the lock so concurrent readers immediately see CONVERTED status
+                $lockedLead->status = LeadStatus::CONVERTED;
+                $lockedLead->save();
+
+                $resolvedState = IndianState::fromCodeOrName($state)?->value ?? $state;
+
+                $client = Client::create([
+                    'lead_id' => $lockedLead->id,
+                    'assigned_to' => $lockedLead->assigned_to,
+                    'created_by' => $actingUser->id,
+                    'name' => $clientData['name'] ?? $lockedLead->name,
+                    'company' => $clientData['company'] ?? $lockedLead->company,
+                    'phone' => $clientData['phone'] ?? $lockedLead->phone,
+                    'email' => $clientData['email'] ?? $lockedLead->email,
+                    'billing_address' => $clientData['billing_address'],
+                    'state' => $resolvedState,
+                    'gstin' => $gstin,
+                ]);
+
+                return $client;
+            });
+        } catch (QueryException $e) {
+            if (str_contains($e->getMessage(), 'Duplicate entry') || str_contains($e->getMessage(), 'UNIQUE constraint failed') || $e->getCode() === '23000') {
+                throw new DomainException('This lead has already been converted.', 0, $e);
+            }
+
+            throw $e;
+        }
     }
 
     /**
