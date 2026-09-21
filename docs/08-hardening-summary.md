@@ -168,3 +168,6 @@ For formal vulnerability write-ups, attack traces, CVSS vectors, and architectur
   - [VULN-04: Cross-User Lead Conversion IDOR](./security/VULN-04-cross-user-lead-conversion-idor/report.md)
   - [VULN-05: Statutory FY Boundary Bypass via Backdating](./security/VULN-05-fy-backdating-closed-period/report.md)
   - [VULN-06: Permissive Content-Security-Policy Wildcard Bypass](./security/VULN-06-permissive-csp-wildcard/report.md)
+  - [VULN-07: Default Administrator Credentials Provisioning in Production Mode](./security/VULN-07-production-bootstrap-default-password/report.md)
+  - [VULN-08: Soft-Deleted Client Unique Constraint Dead-End on Lead Re-conversion](./security/VULN-08-lead-conversion-soft-delete-dead-end/report.md)
+  - [VULN-09: Premature Financial Year Lockout via Forward-Dated Invoices](./security/VULN-09-fy-forward-dated-premature-lockout/report.md)

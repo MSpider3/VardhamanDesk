@@ -15,6 +15,9 @@ This directory contains the security audits, vulnerability writeups, and archite
 | [VULN-04 Report](./VULN-04-cross-user-lead-conversion-idor/report.md) | Cross-User Lead Conversion IDOR via Direct Service Invocation | Client Service | Resolved |
 | [VULN-05 Report](./VULN-05-fy-backdating-closed-period/report.md) | Statutory Financial Year Boundary Bypass via Draft Backdating | Invoicing / GST Compliance | Resolved |
 | [VULN-06 Report](./VULN-06-permissive-csp-wildcard/report.md) | Permissive Content-Security-Policy (CSP) Wildcard Bypass | HTTP Security Headers | Resolved |
+| [VULN-07 Report](./VULN-07-production-bootstrap-default-password/report.md) | Default Administrator Credentials Provisioning in Production Mode | Console / Deployment | Resolved |
+| [VULN-08 Report](./VULN-08-lead-conversion-soft-delete-dead-end/report.md) | Soft-Deleted Client Unique Constraint Dead-End on Lead Re-conversion | Client Service / Lifecycle | Resolved |
+| [VULN-09 Report](./VULN-09-fy-forward-dated-premature-lockout/report.md) | Premature Financial Year Lockout via Forward-Dated Invoices | Invoicing / State Machine | Resolved |
 
 ---
 
@@ -27,12 +30,15 @@ This directory contains the security audits, vulnerability writeups, and archite
 2. **Atomic Concurrency & Database Integrity**:
    - `SELECT ... FOR UPDATE` row locks on `Lead`, `Invoice`, and `FinancialYearCounter`.
    - Hard database constraints (`UNIQUE KEY (lead_id)` on `clients`, `UNIQUE KEY (financial_year)` on `financial_year_counters`).
+   - Soft-delete aware lifecycle reconciliation restoring prior client records upon re-conversion.
 3. **Financial Immutability**:
    - Deletion of non-draft invoices permanently blocked for all users (including Admin).
    - Modification of financial fields on locked invoices blocked at model and policy layers.
    - Payments ledger append-only; update and delete prohibited.
    - Strict overpayment prevention at write time.
-4. **Transport & Client Security**:
+   - Real calendar FY reference preventing backdating into closed statutory accounting periods.
+4. **Transport, Deployment & Client Security**:
+   - Production bootstrap command rejecting missing passwords or weak default credentials.
    - Scoped Content Security Policy (no open `https:` wildcards).
    - Strict HTTP Transport Security (`HSTS`).
    - Frame ancestors set to `'none'` (clickjacking prevention).
