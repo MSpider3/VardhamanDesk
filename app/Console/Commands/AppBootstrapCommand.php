@@ -19,7 +19,10 @@ class AppBootstrapCommand extends Command
     protected $signature = 'app:bootstrap
                             {--name= : Name for the Admin user}
                             {--email= : Email for the Admin user}
-                            {--password= : Password for the Admin user}';
+                            {--password= : Password for the Admin user}
+                            {--admin-name= : Alias for --name}
+                            {--admin-email= : Alias for --email}
+                            {--admin-password= : Alias for --password}';
 
     /**
      * The console command description.
@@ -38,9 +41,19 @@ class AppBootstrapCommand extends Command
         // 1. Ensure first Admin exists
         $admin = User::where('role', UserRole::ADMIN)->first();
         if (! $admin) {
-            $email = $this->option('email') ?: env('SEED_ADMIN_EMAIL', 'admin@vardhamandesk.local');
-            $name = $this->option('name') ?: 'Admin User';
-            $password = $this->option('password') ?: env('SEED_DEFAULT_PASSWORD', 'password');
+            $email = $this->option('admin-email') ?: ($this->option('email') ?: env('SEED_ADMIN_EMAIL', 'admin@vardhamandesk.local'));
+            $name = $this->option('admin-name') ?: ($this->option('name') ?: 'Admin User');
+            $password = $this->option('admin-password') ?: ($this->option('password') ?: (env('APP_BOOTSTRAP_ADMIN_PASSWORD') ?: env('SEED_DEFAULT_PASSWORD')));
+
+            if (app()->isProduction()) {
+                if (empty($password) || $password === 'password') {
+                    $this->error('In production, you must supply a secure password via --password or the SEED_DEFAULT_PASSWORD / APP_BOOTSTRAP_ADMIN_PASSWORD environment variable.');
+
+                    return self::FAILURE;
+                }
+            } else {
+                $password = $password ?: 'password';
+            }
 
             $admin = User::firstOrCreate(
                 ['email' => $email],

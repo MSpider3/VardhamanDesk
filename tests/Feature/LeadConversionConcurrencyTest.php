@@ -103,3 +103,39 @@ test('Item 5 App guard: concurrent lead conversion rejects second request and al
     // Only one Client row must ever exist for this lead
     expect(Client::where('lead_id', $lead->id)->count())->toBe(1);
 });
+
+test('Item 4 (Second-Pass): converting lead whose prior client was soft-deleted cleanly restores client without dead-end or unique constraint crash', function () {
+    $lead = Lead::factory()->create([
+        'status' => LeadStatus::QUALIFIED,
+        'assigned_to' => $this->sales->id,
+        'name' => 'Original Lead Name',
+    ]);
+
+    // 1. Initial conversion
+    $client = $this->clientService->convertLeadToClient($lead, [
+        'name' => 'Client v1',
+        'billing_address' => 'Jaipur, Rajasthan',
+        'state' => '08',
+    ], $this->sales);
+
+    expect(Client::where('lead_id', $lead->id)->count())->toBe(1);
+    expect($lead->fresh()->status)->toBe(LeadStatus::CONVERTED);
+
+    // 2. Client is soft-deleted (while invoice-free)
+    $client->delete();
+    expect(Client::where('lead_id', $lead->id)->count())->toBe(0);
+    expect(Client::withTrashed()->where('lead_id', $lead->id)->count())->toBe(1);
+
+    // 3. Re-convert the lead: must restore the soft-deleted client, update details, and return active client
+    $reconvertedClient = $this->clientService->convertLeadToClient($lead->fresh(), [
+        'name' => 'Client Restored',
+        'billing_address' => 'Updated Address, Jaipur',
+        'state' => '08',
+    ], $this->sales);
+
+    expect($reconvertedClient)->toBeInstanceOf(Client::class);
+    expect($reconvertedClient->trashed())->toBeFalse();
+    expect($reconvertedClient->name)->toBe('Client Restored');
+    expect($reconvertedClient->billing_address)->toBe('Updated Address, Jaipur');
+    expect(Client::where('lead_id', $lead->id)->count())->toBe(1);
+});

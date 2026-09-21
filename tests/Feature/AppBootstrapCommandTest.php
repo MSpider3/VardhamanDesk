@@ -6,8 +6,24 @@ use App\Models\GstRate;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 
-test('app:bootstrap creates admin, gst rates, and company settings on empty database and is safe in production', function () {
+test('app:bootstrap fails in production if no password is provided or weak default is used', function () {
+    app()->detectEnvironment(fn () => 'production');
+    expect(app()->isProduction())->toBeTrue();
+
+    // With no password option and default/no env var, must fail with exit code 1
+    $this->artisan('app:bootstrap')
+        ->assertFailed()
+        ->expectsOutputToContain('In production, you must supply a secure password via --password or the SEED_DEFAULT_PASSWORD / APP_BOOTSTRAP_ADMIN_PASSWORD environment variable.');
+
+    // Assert no Admin user was created
+    expect(User::where('role', UserRole::ADMIN)->count())->toBe(0);
+
+    app()->detectEnvironment(fn () => 'testing');
+});
+
+test('app:bootstrap creates admin, gst rates, and company settings when password is provided in production', function () {
     app()->detectEnvironment(fn () => 'production');
     expect(app()->isProduction())->toBeTrue();
 
@@ -16,15 +32,19 @@ test('app:bootstrap creates admin, gst rates, and company settings on empty data
     expect(GstRate::count())->toBe(0);
     expect(CompanySetting::count())->toBe(0);
 
-    // Run app:bootstrap command
-    $this->artisan('app:bootstrap')
-        ->assertSuccessful();
+    // Run app:bootstrap with explicit strong password
+    $this->artisan('app:bootstrap', [
+        '--name' => 'Prod Admin',
+        '--email' => 'admin@vardhaman.com',
+        '--password' => 'StrongAdminPass123!',
+    ])->assertSuccessful();
 
     // Assert Admin created and can access Filament panel immediately
-    $admin = User::where('role', UserRole::ADMIN)->first();
+    $admin = User::where('email', 'admin@vardhaman.com')->first();
     expect($admin)->not->toBeNull();
     expect($admin->email_verified_at)->not->toBeNull();
     expect($admin->is_active)->toBeTrue();
+    expect(Hash::check('StrongAdminPass123!', $admin->password))->toBeTrue();
     expect($admin->canAccessPanel(Filament::getCurrentOrDefaultPanel()))->toBeTrue();
 
     // Assert 4 GST rates exist
@@ -39,7 +59,7 @@ test('app:bootstrap creates admin, gst rates, and company settings on empty data
     expect($setting->state_code)->toBe('08');
 
     // Run again to verify idempotency (safe to re-run without duplicate rows or errors)
-    $this->artisan('app:bootstrap')
+    $this->artisan('app:bootstrap', ['--password' => 'StrongAdminPass123!'])
         ->assertSuccessful();
 
     expect(User::where('role', UserRole::ADMIN)->count())->toBe(1);

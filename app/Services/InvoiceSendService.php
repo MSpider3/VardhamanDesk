@@ -104,24 +104,26 @@ class InvoiceSendService
             $effectiveDate = $sendDate ? Carbon::parse($sendDate) : ($lockedInvoice->invoice_date ?? Carbon::now());
             $fy = self::deriveFinancialYear($effectiveDate);
 
-            // Restrict backdating into an already-closed financial year
-            $maxFy = FinancialYearCounter::max('financial_year');
-            if ($maxFy !== null && strcmp($fy, $maxFy) < 0) {
-                throw new DomainException("This invoice's date falls in an already-closed financial year ({$fy}); update the invoice date to fall within {$maxFy}, or contact an admin.");
+            // Restrict backdating into an already-closed financial year (earlier than current real FY)
+            $currentFy = self::deriveFinancialYear(Carbon::now());
+            if (strcmp($fy, $currentFy) < 0) {
+                throw new DomainException("This invoice's date falls in an already-closed financial year ({$fy}); update the invoice date to fall within {$currentFy}, or contact an admin.");
             }
 
             // Ensure FY counter exists atomically and lock it
-            try {
-                FinancialYearCounter::create([
-                    'financial_year' => $fy,
-                    'last_sequence' => 0,
-                ]);
-            } catch (QueryException $e) {
-                // Row already exists or was concurrently created
-                if (! str_contains($e->getMessage(), 'Duplicate entry') &&
-                    ! str_contains($e->getMessage(), 'UNIQUE constraint failed') &&
-                    $e->getCode() !== '23000') {
-                    throw $e;
+            if (! FinancialYearCounter::where('financial_year', $fy)->exists()) {
+                try {
+                    FinancialYearCounter::create([
+                        'financial_year' => $fy,
+                        'last_sequence' => 0,
+                    ]);
+                } catch (QueryException $e) {
+                    // Row already exists or was concurrently created
+                    if (! str_contains($e->getMessage(), 'Duplicate entry') &&
+                        ! str_contains($e->getMessage(), 'UNIQUE constraint failed') &&
+                        $e->getCode() !== '23000') {
+                        throw $e;
+                    }
                 }
             }
 

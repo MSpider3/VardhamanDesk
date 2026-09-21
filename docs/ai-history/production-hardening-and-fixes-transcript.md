@@ -9,7 +9,7 @@
 ### 👤 User (Step 0 • 2026-09-21T08:02:14Z)
 
 ``` markdown
-/goal @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/docs/07-production-hardening-fix-request.md] follow this and implmet the chnages and then perform /deep-security-scan after the implmetaion and then fix that too and then /dogfood and then fix those too  and whne writing the code and imppemting the changes follow the /karpathy-guidelines and then/propose-security-hardening and implment it too  then perform /systematic-debugging /test-driven-development /vulnerability-writeup
+/goal @[docs/07-production-hardening-fix-request.md] follow this and implmet the chnages and then perform /deep-security-scan after the implmetaion and then fix that too and then /dogfood and then fix those too  and whne writing the code and imppemting the changes follow the /karpathy-guidelines and then/propose-security-hardening and implment it too  then perform /systematic-debugging /test-driven-development /vulnerability-writeup
 ```
 
 i want you improve this promt. im writitng this and and i want to use thse skills you write improved version of this and write the skills in proepr oder too for the promt
@@ -31,7 +31,7 @@ Here is an analysis of the issues in your draft, followed by an optimized, produ
 1. **Methodology vs. Phased Steps**:
    * Skills like `/karpathy-guidelines`, `/test-driven-development`, and `/systematic-debugging` are **governing engineering practices**, not sequential steps to execute at the very end. Placing them at the end confuses the agent into writing code first without tests, and only attempting "TDD" after everything is already done.
 2. **Logical Security & QA Pipeline**:
-   * **Fix Core Issues First**: Implement the requirements in [`07-production-hardening-fix-request.md`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/07-production-hardening-fix-request.md) under TDD.
+   * **Fix Core Issues First**: Implement the requirements in [`07-production-hardening-fix-request.md`](./07-production-hardening-fix-request.md) under TDD.
    * **Deep Security Scan**: Run `/deep-security-scan` to catch both newly introduced issues and pre-existing vulnerabilities.
    * **Architectural Hardening**: Run `/propose-security-hardening` to identify systemic improvements (e.g. CSP headers, query boundaries, session protections) and implement them.
    * **Exploratory QA**: Run `/dogfood` to verify the actual Filament admin panel, live migrations, and artisan commands in runtime conditions.
@@ -53,7 +53,7 @@ Throughout the entire lifecycle of this task, strictly follow:
 ---
 
 ### Phase 1: Implement Production Hardening Brief
-Reference document: @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/docs/07-production-hardening-fix-request.md]
+Reference document: @[docs/07-production-hardening-fix-request.md]
 1. Read the brief thoroughly alongside `docs/AGENT.md`.
 2. Work through the items in order (Part A: client-reported issues, followed by Part B).
 3. Ensure all tests pass on both SQLite and MySQL environments as outlined in §11 of the brief.
@@ -109,7 +109,7 @@ Throughout all work, strictly adhere to:
 ---
 
 ### Step 1: Implement Brief Requirements
-Reference: @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/docs/07-production-hardening-fix-request.md]
+Reference: @[docs/07-production-hardening-fix-request.md]
 1. Read the brief and `docs/AGENT.md`.
 2. Implement Part A (client-reported issues) followed by Part B in exact order.
 3. Validate all changes with automated tests on both SQLite and MySQL environments.
@@ -140,7 +140,7 @@ Reference: @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/docs/07
 If you prefer a concise prompt without headers:
 
 ```markdown
-/goal Follow and implement the requirements in @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/docs/07-production-hardening-fix-request.md]. While implementing, strictly adhere to /karpathy-guidelines, apply /test-driven-development (failing tests first on SQLite and MySQL), and use /systematic-debugging for any failures. Once complete, run /deep-security-scan and fix all validated findings. Then execute /propose-security-hardening and implement the architectural defenses. Next, perform exploratory QA with /dogfood and resolve any detected defects. Finally, document all remediated issues and verification results using /vulnerability-writeup.
+/goal Follow and implement the requirements in @[docs/07-production-hardening-fix-request.md]. While implementing, strictly adhere to /karpathy-guidelines, apply /test-driven-development (failing tests first on SQLite and MySQL), and use /systematic-debugging for any failures. Once complete, run /deep-security-scan and fix all validated findings. Then execute /propose-security-hardening and implement the architectural defenses. Next, perform exploratory QA with /dogfood and resolve any detected defects. Finally, document all remediated issues and verification results using /vulnerability-writeup.
 ```
 
 ---
@@ -175,8 +175,8 @@ Throughout all work, strictly adhere to:
 ---
 
 ### Step 1: Implement Brief Requirements
-Reference: @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/docs/07-production-hardening-fix-request.md] 
-1. Read the brief and `docs/AGENT.md`@[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/docs/AGENT.md] .
+Reference: @[docs/07-production-hardening-fix-request.md] 
+1. Read the brief and `docs/AGENT.md`@[docs/AGENT.md] .
 2. Implement Part A (client-reported issues) followed by Part B in exact order.
 3. Validate all changes with automated tests on both SQLite and MySQL environments.
 

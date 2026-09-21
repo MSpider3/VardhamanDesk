@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\InvoiceCalculationService;
 use App\Services\InvoiceDraftService;
 use App\Services\InvoiceSendService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 
 beforeEach(function () {
@@ -85,30 +86,33 @@ test('sending draft allocates formatted sequential number starting from 0001 per
 });
 
 test('different financial years maintain separate sequential counters', function () {
-    FinancialYearCounter::query()->delete();
+    Carbon::setTestNow('2026-03-15');
+    try {
+        $draftFy25 = $this->draftService->createDraft(
+            ['client_id' => $this->client->id, 'invoice_date' => '2026-03-15'],
+            [['description' => 'Past FY Service', 'quantity' => 1, 'rate' => 5000, 'gst_rate_id' => $this->gst18->id]],
+            $this->sales1
+        );
 
-    $draftFy25 = $this->draftService->createDraft(
-        ['client_id' => $this->client->id, 'invoice_date' => '2026-03-15'],
-        [['description' => 'Past FY Service', 'quantity' => 1, 'rate' => 5000, 'gst_rate_id' => $this->gst18->id]],
-        $this->sales1
-    );
+        $draftFy26 = $this->draftService->createDraft(
+            ['client_id' => $this->client->id, 'invoice_date' => '2026-04-15'],
+            [['description' => 'Current FY Service', 'quantity' => 1, 'rate' => 5000, 'gst_rate_id' => $this->gst18->id]],
+            $this->sales1
+        );
 
-    $draftFy26 = $this->draftService->createDraft(
-        ['client_id' => $this->client->id, 'invoice_date' => '2026-04-15'],
-        [['description' => 'Current FY Service', 'quantity' => 1, 'rate' => 5000, 'gst_rate_id' => $this->gst18->id]],
-        $this->sales1
-    );
+        $sentFy25 = $this->sendService->send($draftFy25, '2026-03-15');
+        $sentFy26 = $this->sendService->send($draftFy26, '2026-04-15');
 
-    $sentFy25 = $this->sendService->send($draftFy25, '2026-03-15');
-    $sentFy26 = $this->sendService->send($draftFy26, '2026-04-15');
+        expect($sentFy25->invoice_number)->toBe('VI/2025-26/0001')
+            ->and($sentFy25->financial_year)->toBe('2025-26')
+            ->and($sentFy25->sequence_number)->toBe(1);
 
-    expect($sentFy25->invoice_number)->toBe('VI/2025-26/0001')
-        ->and($sentFy25->financial_year)->toBe('2025-26')
-        ->and($sentFy25->sequence_number)->toBe(1);
-
-    expect($sentFy26->invoice_number)->toBe('VI/2026-27/0001')
-        ->and($sentFy26->financial_year)->toBe('2026-27')
-        ->and($sentFy26->sequence_number)->toBe(1);
+        expect($sentFy26->invoice_number)->toBe('VI/2026-27/0001')
+            ->and($sentFy26->financial_year)->toBe('2026-27')
+            ->and($sentFy26->sequence_number)->toBe(1);
+    } finally {
+        Carbon::setTestNow();
+    }
 });
 
 test('deleted draft consumes no sequence number and leaves no gaps', function () {
@@ -261,4 +265,15 @@ test('Item 9: backdating invoice into already-closed financial year is rejected 
     $sentFuture = $this->sendService->send($draftFuture, '2027-04-10');
     expect($sentFuture->financial_year)->toBe('2027-28');
     expect($sentFuture->invoice_number)->toBe('VI/2027-28/0001');
+
+    // 4. Send another ordinary invoice dated in 2026-27 (today's real FY) -> MUST still succeed and not be locked out by the forward-dated invoice!
+    $draftCurrentAfterFuture = $this->draftService->createDraft(
+        ['client_id' => $this->client->id, 'invoice_date' => '2026-07-01'],
+        [['description' => 'Current Year Service After Forward Dated', 'quantity' => 1, 'rate' => 1000, 'gst_rate_id' => $this->gst18->id]],
+        $this->sales1
+    );
+
+    $sentCurrentAfterFuture = $this->sendService->send($draftCurrentAfterFuture, '2026-07-01');
+    expect($sentCurrentAfterFuture->financial_year)->toBe('2026-27');
+    expect($sentCurrentAfterFuture->invoice_number)->toBe('VI/2026-27/0002');
 });

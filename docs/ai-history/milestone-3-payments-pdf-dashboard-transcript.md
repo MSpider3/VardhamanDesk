@@ -8,7 +8,7 @@
 
 ### 👤 User (Step 0 • 2026-09-18T10:54:57Z)
 
-/goal raed the @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/plan.md] and proceed with the work
+/goal raed the @[plan.md] and proceed with the work
 
 ---
 
@@ -790,7 +790,7 @@
 
 ### 🤖 Assistant (Step 402 • 2026-09-18T11:24:33Z)
 
-I have completed the implementation of **Milestone 1 — Leads + Users** strictly following [plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md) and the canonical specifications in the `docs/` directory.
+I have completed the implementation of **Milestone 1 — Leads + Users** strictly following [plan.md](./plan.md) and the canonical specifications in the `docs/` directory.
 
 ---
 
@@ -804,26 +804,26 @@ I have completed the implementation of **Milestone 1 — Leads + Users** strictl
   - **Database**: MySQL 8.0 running in Docker container (`vardhamandesk-mysql`) on `127.0.0.1:3306`
   - **Testing**: Pest `4.7.8` (`pestphp/pest-plugin-laravel`)
 - **Authentication**: Native Laravel auth integration with Filament Admin panel at `/admin`. Root path `/` redirects to `/admin`.
-- **Documentation**: Confirmed setup instructions and development credentials documented in [README.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/README.md).
+- **Documentation**: Confirmed setup instructions and development credentials documented in [README.md](./README.md).
 
 #### 2. User & Authorization Foundation
-- **Role Architecture**: Implemented [UserRole](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Enums/UserRole.php) enum (`admin`, `sales`) with `isAdmin()` and `isSales()` helpers on [User](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/User.php).
-- **Admin-Only User Management**: [UserPolicy](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Policies/UserPolicy.php) and [UserResource](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Filament/Resources/Users/UserResource.php) restrict user management to Administrators; Sales users are denied access and the navigation item is hidden.
+- **Role Architecture**: Implemented [UserRole](./app/Enums/UserRole.php) enum (`admin`, `sales`) with `isAdmin()` and `isSales()` helpers on [User](./app/Models/User.php).
+- **Admin-Only User Management**: [UserPolicy](./app/Policies/UserPolicy.php) and [UserResource](./app/Filament/Resources/Users/UserResource.php) restrict user management to Administrators; Sales users are denied access and the navigation item is hidden.
 
 #### 3. Leads Domain & Lifecycle Controls
-- **Schema & Migrations**: [create_leads_table](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/database/migrations/2026_09_18_110803_create_leads_table
+- **Schema & Migrations**: [create_leads_table](./database/migrations/2026_09_18_110803_create_leads_table
 <truncated 3813 bytes>
 nTest.php) (4 tests): Verifies Admin global privileges and Sales block on user management.
-- [LeadOwnershipTest.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/LeadOwnershipTest.php) (8 tests): Verifies query scoping, policy protection against accessing/editing other reps' leads, auto-assignment, and Admin reassignment.
-- [LeadLifecycleTest.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/LeadLifecycleTest.php) (3 tests): Verifies canonical sources/statuses, backward transitions, reopening lost leads, and terminal converted state enforcement.
-- [LeadNotesTest.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/LeadNotesTest.php) (5 tests): Verifies note follow-up synchronization, authorization, and note immutability.
-- [DashboardTest.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/DashboardTest.php) (3 tests): Verifies widget ordering, query conditions, exclusion of converted leads, and per-role visibility.
-- [FilamentPanelSmokeTest.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/FilamentPanelSmokeTest.php) (2 tests): End-to-end HTTP smoke test for Admin and Sales login and navigation.
+- [LeadOwnershipTest.php](./tests/Feature/LeadOwnershipTest.php) (8 tests): Verifies query scoping, policy protection against accessing/editing other reps' leads, auto-assignment, and Admin reassignment.
+- [LeadLifecycleTest.php](./tests/Feature/LeadLifecycleTest.php) (3 tests): Verifies canonical sources/statuses, backward transitions, reopening lost leads, and terminal converted state enforcement.
+- [LeadNotesTest.php](./tests/Feature/LeadNotesTest.php) (5 tests): Verifies note follow-up synchronization, authorization, and note immutability.
+- [DashboardTest.php](./tests/Feature/DashboardTest.php) (3 tests): Verifies widget ordering, query conditions, exclusion of converted leads, and per-role visibility.
+- [FilamentPanelSmokeTest.php](./tests/Feature/FilamentPanelSmokeTest.php) (2 tests): End-to-end HTTP smoke test for Admin and Sales login and navigation.
 
 > [!NOTE]
 > During automated browser testing, the environment's `open_browser_url` tool reported a Chrome DevTools Protocol connection issue (`failed to resolve CDP URLs: failed to parse CDP port`). However, the entire application flow, Filament panels, login authentication, navigation, and Livewire widgets have been comprehensively verified with passing end-to-end Pest tests and HTTP checks against the active server.
 
-All Milestone 1 deliverable checkboxes have been updated in [docs/06-milestones-and-deliverables.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/06-milestones-and-deliverables.md) and [plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md).
+All Milestone 1 deliverable checkboxes have been updated in [docs/06-milestones-and-deliverables.md](./06-milestones-and-deliverables.md) and [plan.md](./plan.md).
 
 <!-- GOAL_COMPLETE -->
 
@@ -1010,7 +1010,7 @@ The automated browser subagent navigated the live application and verified the f
 
 ### 👤 User (Step 436 • 2026-09-18T13:53:50Z)
 
-/goal  read and follow the new updated @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/plan.md]  file and follow it
+/goal  read and follow the new updated @[plan.md]  file and follow it
 
 ---
 
@@ -1538,16 +1538,16 @@ The automated browser subagent navigated the live application and verified the f
 
 ### Milestone 2: Clients and Invoices — Complete
 
-All deliverables for **Milestone 2 — Clients + Invoices** have been implemented, verified, tested, and committed according to the canonical specification in `docs/` (`01`–`06`, `AGENT.md`) and [plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md).
+All deliverables for **Milestone 2 — Clients + Invoices** have been implemented, verified, tested, and committed according to the canonical specification in `docs/` (`01`–`06`, `AGENT.md`) and [plan.md](./plan.md).
 
 ---
 
 ### Key Accomplishments
 
 1. **Shared Enums & Validation Rules**:
-   - [app/Enums/IndianState.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Enums/IndianState.php): Authoritative enum for all 36 Indian states/UTs with official two-digit GST state codes (Rajasthan `08`, Maharashtra `27`, etc.).
-   - [app/Enums/InvoiceStatus.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Enums/InvoiceStatus.php): `draft`, `sent`, `partially_paid`, `paid`, with `isDeletable()` and `isLocked()` helpers.
-   - [app/Rules/ValidGstin.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Rules/ValidGstin.php): Validates 15-character alphanumeric GSTIN format and cross-references state prefix with client's selected state code (allows blank/null for unregistered buyers).
+   - [app/Enums/IndianState.php](./app/Enums/IndianState.php): Authoritative enum for all 36 Indian states/UTs with official two-digit GST state codes (Rajasthan `08`, Maharashtra `27`, etc.).
+   - [app/Enums/InvoiceStatus.php](./app/Enums/InvoiceStatus.php): `draft`, `sent`, `partially_paid`, `paid`, with `isDeletable()` and `isLocked()` helpers.
+   - [app/Rules/ValidGstin.php](./app/Rules/ValidGstin.php): Validates 15-character alphanumeric GSTIN format and cross-references state prefix with client's selected state code (allows blank/null for unregistered buyers).
 
 2. **Reference & Configuration Tables**:
    - Migrations and models for `gst_rates`, `company_settings`, and `financial_year_counters`.
@@ -1556,25 +1556,25 @@ All deliverables for **Milestone 2 — Clients + Invoices** have been implemente
 
 3. **Clients Domain**:
    - Migration for `clients` with `lead_id` (nullable), `assigned_to` (current owner), `created_by` (audit trail), `state`, `gstin`, and soft deletes.
-   - [ClientOwnershipScope](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Scopes/ClientOwnershipScope.php) and [ClientPolicy](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Policies/ClientPolicy.php) enforcing role isolation and Admin reassignment.
+   - [ClientOwnershipScope](./app/Models/Scopes/ClientOwnershipScope.php) and [ClientPolicy](./app/Policies/ClientPolicy.php) enforcing role isolation and Admin reassignment.
    - [ClientService](file:
 <truncated 344 bytes>
 me/Projects/VardhamanDesk/app/Filament/Resources/Clients/ClientResource.php) and read-only `LeadNotesRelationManager`.
 
 4. **Invoices Domain & Tax Calculation**:
    - Migrations and models for `invoices` and `invoice_items` with strict immutability guards (drafts deletable; sent/paid invoices never deletable).
-   - [InvoiceCalculationService](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Services/InvoiceCalculationService.php): Decimal-safe math with intra-state (CGST + SGST split evenly) vs inter-state (IGST) logic and per-line mixed rates.
-   - [InvoiceDraftService](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Services/InvoiceDraftService.php): Transactional draft creation and editing with server-side totals aggregation.
-   - [InvoiceSendService](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Services/InvoiceSendService.php): Safe Draft → Sent transition using April 1–March 31 FY derivation, atomic `SELECT ... FOR UPDATE` counter lock, format `VI/YYYY-YY/NNNN`, and permanent line locking.
-   - Filament [InvoiceResource](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Filament/Resources/Invoices/InvoiceResource.php) with client auto-population, line-item repeater, live preview, and modal Send confirmation action.
+   - [InvoiceCalculationService](./app/Services/InvoiceCalculationService.php): Decimal-safe math with intra-state (CGST + SGST split evenly) vs inter-state (IGST) logic and per-line mixed rates.
+   - [InvoiceDraftService](./app/Services/InvoiceDraftService.php): Transactional draft creation and editing with server-side totals aggregation.
+   - [InvoiceSendService](./app/Services/InvoiceSendService.php): Safe Draft → Sent transition using April 1–March 31 FY derivation, atomic `SELECT ... FOR UPDATE` counter lock, format `VI/YYYY-YY/NNNN`, and permanent line locking.
+   - Filament [InvoiceResource](./app/Filament/Resources/Invoices/InvoiceResource.php) with client auto-population, line-item repeater, live preview, and modal Send confirmation action.
 
 5. **Seeders & Verification**:
-   - Updated [DatabaseSeeder.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/database/seeders/DatabaseSeeder.php) covering intra-state, inter-state, and mixed-rate Draft and Sent invoices.
+   - Updated [DatabaseSeeder.php](./database/seeders/DatabaseSeeder.php) covering intra-state, inter-state, and mixed-rate Draft and Sent invoices.
    - **66 Pest tests passing** across 10 test suites (including client conversion, ownership isolation, GSTIN validation, calculations, numbering, and filament smoke tests).
    - Laravel Pint code style check passed with 0 issues.
    - Changes committed to `main` (`e57084d`).
 
-Detailed notes and artifact: [walkthrough.md](file:///home/mehulgolecha/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/walkthrough.md).
+Detailed notes and artifact: [walkthrough.md](~/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/walkthrough.md).
 
 <!-- GOAL_COMPLETE -->
 
@@ -1604,16 +1604,16 @@ Detailed notes and artifact: [walkthrough.md](file:///home/mehulgolecha/.gemini/
 
 ### Verification & Completion of Milestone 2 Plan
 
-I have read and followed all instructions and specifications in the updated [plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md) file.
+I have read and followed all instructions and specifications in the updated [plan.md](./plan.md) file.
 
 ---
 
 ### Key Highlights
 
 1. **Enums, States, and Precision**:
-   - [IndianState.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Enums/IndianState.php): Full mapping of all 36 Indian states and UTs with their official 2-digit GST state codes (`08` for Rajasthan, `27` for Maharashtra, etc.).
-   - [InvoiceStatus.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Enums/InvoiceStatus.php): `draft`, `sent`, `partially_paid`, `paid`.
-   - [ValidGstin.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Rules/ValidGstin.php): Validates 15-character alphanumeric GSTIN and matches prefix to client state code; accepts blank/null for unregistered clients.
+   - [IndianState.php](./app/Enums/IndianState.php): Full mapping of all 36 Indian states and UTs with their official 2-digit GST state codes (`08` for Rajasthan, `27` for Maharashtra, etc.).
+   - [InvoiceStatus.php](./app/Enums/InvoiceStatus.php): `draft`, `sent`, `partially_paid`, `paid`.
+   - [ValidGstin.php](./app/Rules/ValidGstin.php): Validates 15-character alphanumeric GSTIN and matches prefix to client state code; accepts blank/null for unregistered clients.
 
 2. **Reference Tables & Seed Data**:
    - `gst_rates`: Active rates `0.00`, `5.00`, `18.00`, `40.00` verified against CBIC Notification No. 9/2025-Central Tax (Rate).
@@ -1622,25 +1622,25 @@ I have read and followed all instructions and specifications in the updated [pla
 
 3. **Clients Domain**:
    - `clients` table with `lead_id` (nullable), `assigned_to` (current owner), `created_by` (audit trail), `state`, `gstin`, and soft deletes.
-   - Global scope [ClientOwnershipScope](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Scopes/ClientOwnershipScope.php) and [ClientPolicy](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Policies/ClientPolicy.php) ensuring Sales access only to their assigned clients, while Admin has global access and can reassign owners.
-   - [ClientService](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Services/ClientService.php): Atomic lead conversion (validates Qualified status, s
+   - Global scope [ClientOwnershipScope](./app/Models/Scopes/ClientOwnershipScope.php) and [ClientPolicy](./app/Policies/ClientPolicy.php) ensuring Sales access only to their assigned clients, while Admin has global access and can reassign owners.
+   - [ClientService](./app/Services/ClientService.php): Atomic lead conversion (validates Qualified status, s
 <truncated 263 bytes>
 ead-only `LeadNotesRelationManager`.
 
 4. **Invoices Domain & GST Calculation**:
    - `invoices` and `invoice_items` with decimal precision (`DECIMAL(12,2)`).
-   - [InvoiceCalculationService](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Services/InvoiceCalculationService.php): Intra-state (Rajasthan → Rajasthan: split evenly into CGST + SGST) vs inter-state (IGST), with per-line mixed rates support.
-   - [InvoiceDraftService](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Services/InvoiceDraftService.php): Transactional draft invoice management with server-side totals calculation.
-   - [InvoiceSendService](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Services/InvoiceSendService.php): April 1–March 31 financial year derivation, `SELECT ... FOR UPDATE` counter locking, sequential number allocation (`VI/YYYY-YY/NNNN`), and permanent line-item locking.
+   - [InvoiceCalculationService](./app/Services/InvoiceCalculationService.php): Intra-state (Rajasthan → Rajasthan: split evenly into CGST + SGST) vs inter-state (IGST), with per-line mixed rates support.
+   - [InvoiceDraftService](./app/Services/InvoiceDraftService.php): Transactional draft invoice management with server-side totals calculation.
+   - [InvoiceSendService](./app/Services/InvoiceSendService.php): April 1–March 31 financial year derivation, `SELECT ... FOR UPDATE` counter locking, sequential number allocation (`VI/YYYY-YY/NNNN`), and permanent line-item locking.
    - Strict deletion policy: Drafts can be deleted; Sent/Paid invoices can **never** be deleted by anyone, including Admin.
-   - Filament [InvoiceResource](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Filament/Resources/Invoices/InvoiceResource.php) with dynamic place of supply auto-population, line-item repeater, live preview, and modal Send confirmation action.
+   - Filament [InvoiceResource](./app/Filament/Resources/Invoices/InvoiceResource.php) with dynamic place of supply auto-population, line-item repeater, live preview, and modal Send confirmation action.
 
 5. **Verification & Testing**:
    - **66 Pest tests passing** across 10 test suites (`tests/Feature/`).
    - `vendor/bin/pint --test` clean with 0 style violations.
    - `php artisan migrate:fresh --seed` runs cleanly on MySQL 8 (`vardhamandesk-mysql`).
    - Browser verification confirmed UI rendering of Clients and Invoices resources and create forms.
-   - All Milestone 2 deliverables in [docs/06-milestones-and-deliverables.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/06-milestones-and-deliverables.md) and [plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md) marked complete and committed to git (`e57084d`).
+   - All Milestone 2 deliverables in [docs/06-milestones-and-deliverables.md](./06-milestones-and-deliverables.md) and [plan.md](./plan.md) marked complete and committed to git (`e57084d`).
 
 <!-- GOAL_COMPLETE -->
 
@@ -1648,7 +1648,7 @@ ead-only `LeadNotesRelationManager`.
 
 ### 👤 User (Step 713 • 2026-09-18T15:41:15Z)
 
-/goal follow the new upadted  @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/plan.md] and implemment it
+/goal follow the new upadted  @[plan.md] and implemment it
 
 ---
 
@@ -2374,9 +2374,9 @@ Waiting for the Composer installation task to complete.
 
 # Milestone 3 Implementation & Verification Complete
 
-All requirements for **Milestone 3 — Payments, PDF, Dashboard v2, Final Verification, and Demo** have been implemented, tested, verified on MySQL 8, and committed to the repository in strict alignment with `docs/` (`01`–`06`, `AGENT.md`) and [plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md).
+All requirements for **Milestone 3 — Payments, PDF, Dashboard v2, Final Verification, and Demo** have been implemented, tested, verified on MySQL 8, and committed to the repository in strict alignment with `docs/` (`01`–`06`, `AGENT.md`) and [plan.md](./plan.md).
 
-Please review the detailed [Milestone 3 Walkthrough Artifact](file:///home/mehulgolecha/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/walkthrough.md) for screenshots, test matrices, and execution notes.
+Please review the detailed [Milestone 3 Walkthrough Artifact](~/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/walkthrough.md) for screenshots, test matrices, and execution notes.
 
 ---
 
@@ -2384,20 +2384,20 @@ Please review the detailed [Milestone 3 Walkthrough Artifact](file:///home/mehul
 
 ### 1.1 Payment Ledger & Atomic Recording Service
 - **Append-Only Schema**: Created `payments` table (`invoice_id`, `amount`, `payment_date`, `method`, `reference_note`, `recorded_by`) with no soft deletes to preserve audit integrity.
-- **Ledger Immutability**: [Payment](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Payment.php) model prohibits `update` and `delete` operations at the Eloquent level via domain exceptions.
-- **Payment Method Enum**: [PaymentMethod](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Enums/PaymentMethod.php) with values `bank_transfer` ("Bank Transfer (NEFT/RTGS/IMPS)"), `upi` ("UPI"), `cheque` ("Cheque"), and `cash` ("Cash").
-- **Atomic [RecordPayment](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Services/RecordPayment.php) Service**:
+- **Ledger Immutability**: [Payment](./app/Models/Payment.php) model prohibits `update` and `delete` operations at the Eloquent level via domain exceptions.
+- **Payment Method Enum**: [PaymentMethod](./app/Enums/PaymentMethod.php) with values `bank_transfer` ("Bank Transfer (NEFT/RTGS/IMPS)"), `upi` ("UPI"), `cheque` ("Cheque"), and `cash` ("Cash").
+- **Atomic [RecordPayment](./app/Services/RecordPayment.php) Service**:
   - Executes inside a database transaction with `SELECT ... FOR UPDATE` row locking on the target invoice.
   - Recomputes paid total fresh from the database ledger to eliminate race conditions.
   - Rejects zero, negative, and overpayments outright with clear validation errors; amounts are never clamped.
   - Recalculates and updates invoice status atomically: `sent` (0.00 paid) → `partially_paid` (> 0.00 and < total) → `paid` (= total).
 - **Authorization & Scoping**:
-  - [PaymentOwnershipScope](file:///run/media/mehulg
+  - [PaymentOwnershipScope](./app/Models/Scopes/PaymentOwnershipScope.php
 <truncated 3014 bytes>
 - Paid invoice issued in prior month with payments across prior month (Bank Transfer) and current month (Cheque) (`VI/2026-27/0003`).
   - Draft invoice with mixed GST rates.
   - Sent invoice with mixed 18% and 0% exempt rates (`VI/2026-27/0004`).
-- [Milestone3RegressionTest](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/Milestone3RegressionTest.php) verifies the complete 30-minute demo lifecycle flow and cross-owner security with client reassignment.
+- [Milestone3RegressionTest](./tests/Feature/Milestone3RegressionTest.php) verifies the complete 30-minute demo lifecycle flow and cross-owner security with client reassignment.
 
 ---
 
@@ -2440,7 +2440,7 @@ Please review the detailed [Milestone 3 Walkthrough Artifact](file:///home/mehul
 
 ### 👤 User (Step 1075 • 2026-09-19T07:03:47Z)
 
-/goal follow the updated @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/plan.md] and implemt it.
+/goal follow the updated @[plan.md] and implemt it.
 
 ---
 
@@ -2564,7 +2564,7 @@ Please review the detailed [Milestone 3 Walkthrough Artifact](file:///home/mehul
 
 # Master System Blueprint, Verification & Delivery Plan Implemented
 
-The master blueprint and delivery plan in [plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md) has been audited, implemented, aligned with the repository's test suites and demo seeders, and verified.
+The master blueprint and delivery plan in [plan.md](./plan.md) has been audited, implemented, aligned with the repository's test suites and demo seeders, and verified.
 
 ---
 
@@ -2576,11 +2576,11 @@ The master blueprint and delivery plan in [plan.md](file:///run/media/mehulgolec
    - Restarted the background development server (`php artisan serve --port=8000`), responding with HTTP 200/302.
 
 2. **Demo Credentials & Seeder Alignment**:
-   - Seeded both `sales@vardhamandesk.local` ("Sales A", Aarav Sharma) and `sales1@vardhamandesk.local` through [DatabaseSeeder](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/database/seeders/DatabaseSeeder.php).
-   - Updated [README.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/README.md) and [plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md) so both login options work for evaluators.
+   - Seeded both `sales@vardhamandesk.local` ("Sales A", Aarav Sharma) and `sales1@vardhamandesk.local` through [DatabaseSeeder](./database/seeders/DatabaseSeeder.php).
+   - Updated [README.md](./README.md) and [plan.md](./plan.md) so both login options work for evaluators.
 
 3. **Role & Permissions Matrix & Test Mappings**:
-   - Audited the Role & Permissions Matrix in Section 3 and the Test Coverage in Section 4 of [plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md) to link directly to the underlying test files in `tests/Feature/`.
+   - Audited the Role & Permissions Matrix in Section 3 and the Test Coverage in Section 4 of [plan.md](./plan.md) to link directly to the underlying test files in `tests/Feature/`.
 
 4. **Automated Quality Gates**:
    - **Pest Suite**:
@@ -2605,7 +2605,7 @@ The master blueprint and delivery plan in [plan.md](file:///run/media/mehulgolec
 | **Milestone 3** | Payments, Append-only Ledger, Overpayment Guard, PDF, Dashboard v2 | **Complete** | Commits `671d1ee`, `0ecd062`, `ae205fa`, `7610c75`, `ea88800`, `01523d0` |
 | **Pest Tests** | 94 feature and unit tests (424 assertions) | **Passed** | `tests/Feature/*`, `tests/Unit/*` |
 | **Code Style** | Laravel Pint compliance | **Passed** | 0 violations |
-| **Master Blueprint** | System blueprint, verification matrix, 30-min demo plan, pre-go-live checklist | **Aligned & Ready** | [plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md), [walkthrough.md](file:///home/mehulgolecha/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/walkthrough.md) |
+| **Master Blueprint** | System blueprint, verification matrix, 30-min demo plan, pre-go-live checklist | **Aligned & Ready** | [plan.md](./plan.md), [walkthrough.md](~/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/walkthrough.md) |
 
 <!-- GOAL_COMPLETE -->
 
@@ -2654,7 +2654,7 @@ git push -u origin main
 
 ---
 
-> 🛠️ **Tool**: `grep_search` — *"Search for mehulgolecha in repo"*
+> 🛠️ **Tool**: `grep_search` — *"Search for developer in repo"*
 
 ---
 
@@ -2674,11 +2674,11 @@ git push -u origin main
 
 ---
 
-> 🛠️ **Tool**: `grep_search` — *"Search for mehul in repository"*
+> 🛠️ **Tool**: `grep_search` — *"Search for developer in repository"*
 
 ---
 
-> 🛠️ **Tool**: `grep_search` — *"Search for golecha in repository"*
+> 🛠️ **Tool**: `grep_search` — *"Search for developer in repository"*
 
 ---
 
@@ -2841,14 +2841,14 @@ The repository has been audited for personal information, cleaned of machine-spe
 ## 1. Personal Information & Path Audit Results
 
 - **Workspace & Local Path Sanitization**:
-  - Scanned the entire codebase using regex patterns for personal identifiers (`mehulgolecha`, `mehul`, `Extra Volume`, `/run/media/`, `/home/`, Windows drive paths).
+  - Scanned the entire codebase using regex patterns for personal identifiers (`developer`, `developer`, `Extra Volume`, `/run/media/`, `/home/`, Windows drive paths).
   - Sanitized absolute markdown links in `docs/ai-history/INDEX.md` to relative repository paths (`./milestone-1-leads-users.md`, etc.).
   - Confirmed **0 matches** of local file paths, usernames, or sensitive details across all source code, markdown docs, tests, and configuration files.
 - **Git Ignore Safeguards**:
-  - Strengthened [.gitignore](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/.gitignore) to exclude local `.env`, `.agents/`, `.docs_for later_referal/`, `.vscode/`, `.idea/`, `.antigravity/`, SQLite databases, temporary files (`output.json`), and system artifacts (`.DS_Store`, `Thumbs.db`).
+  - Strengthened [.gitignore](./.gitignore) to exclude local `.env`, `.agents/`, `.docs_for later_referal/`, `.vscode/`, `.idea/`, `.antigravity/`, SQLite databases, temporary files (`output.json`), and system artifacts (`.DS_Store`, `Thumbs.db`).
   - Verified with `git ls-files` that no ignored or sensitive files are tracked.
 - **MIT License**:
-  - Created [LICENSE](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/LICENSE) with standard MIT License terms under `VardhamanDesk Contributors`.
+  - Created [LICENSE](./LICENSE) with standard MIT License terms under `VardhamanDesk Contributors`.
 
 ---
 
@@ -2862,7 +2862,7 @@ The repository has been audited for personal information, cleaned of machine-spe
 INVOICE" watermark. | Verified |
 | **Payments Ledger** | Append-only ledger with auto-updating invoice status (`sent` → `partially_paid` → `paid`). Overpayments are rejected outright at write time (`amount <= remaining_balance`). | Verified |
 | **Dashboard** | Displays **Invoiced this month**, **Received this month**, and **Outstanding receivables** via DB-level aggregates. Features **Overdue Follow-ups** positioned above **Today's Follow-ups**, scoped per user role. | Verified |
-| **Deliverables** | Comprehensive [README.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/README.md) with quick start and demo credentials (`admin@` and `sales@` / `sales1-3@`), master blueprint [plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md), assumptions note in `docs/05-assumptions-and-open-questions.md`, and sanitized AI history in `docs/ai-history/`. | Verified |
+| **Deliverables** | Comprehensive [README.md](./README.md) with quick start and demo credentials (`admin@` and `sales@` / `sales1-3@`), master blueprint [plan.md](./plan.md), assumptions note in `docs/05-assumptions-and-open-questions.md`, and sanitized AI history in `docs/ai-history/`. | Verified |
 
 ---
 
@@ -2954,7 +2954,7 @@ can you make use of codex skills? not though codex but antigravtiy ide using it?
 Both Antigravity IDE and Codex follow the exact same **Agent Skills open format**:
 
 1. Each skill lives in its own directory named after the skill.
-2. The entrypoint is a [`SKILL.md`](file:///home/mehulgolecha/.codex/skills/karpathy-guidelines/SKILL.md) file containing YAML frontmatter with `name` and `description`:
+2. The entrypoint is a [`SKILL.md`](file:///home/developer/.codex/skills/karpathy-guidelines/SKILL.md) file containing YAML frontmatter with `name` and `description`:
    ```markdown
    ---
    name: my-skill
@@ -2965,7 +2965,7 @@ Both Antigravity IDE and Codex follow the exact same **Agent Skills open format*
    ```
 3. Optional helper folders like `scripts/`, `references/`, and `resources/` are also supported identically.
 
-For example, your existing Codex skill [`~/.codex/skills/karpathy-guidelines`](file:///home/mehulgolecha/.codex/skills/karpathy-guidelines/SKILL.md) already conforms 100% to what Antigravity expects.
+For example, your existing Codex skill [`~/.codex/skills/karpathy-guidelines`](file:///home/developer/.codex/skills/karpathy-guidelines/SKILL.md) already conforms 100% to what Antigravity expects.
 
 ---
 
@@ -2992,7 +2992,7 @@ ln -s ~/.codex/skills/karpathy-guidelines ~/.gemini/config/skills/karpathy-guide
 ```
 
 #### Option 2: Project / Workspace-Specific
-If you want a skill active only in a specific workspace (e.g., [`VardhamanDesk`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk)):
+If you want a skill active only in a specific workspace (e.g., [`VardhamanDesk`](file:///run/media/developer/Extra%20Volume/Projects/VardhamanDesk)):
 ```bash
 mkdir -p .agents/skills
 ln -s ~/.codex/skills/<skill-name> .agents/skills/<skill-name>
@@ -3006,7 +3006,7 @@ cp -r ~/.codex/skills/<skill-name> .agents/skills/
 
 - **Automatic Discovery:** Whenever a session starts or reloads, Antigravity discovers all skills in `~/.gemini/config/skills/` and `.agents/skills/`.
 - **Progressive Disclosure:** It registers the `name` and `description` in the agent's context.
-- **On-Demand Activation:** When your request matches the description of a skill, the Antigravity agent automatically loads [`SKILL.md`](file:///home/mehulgolecha/.codex/skills/karpathy-guidelines/SKILL.md) into context, follows its steps, and runs any helper scripts using its own toolset (`run_command`, `view_file`, etc.).
+- **On-Demand Activation:** When your request matches the description of a skill, the Antigravity agent automatically loads [`SKILL.md`](file:///home/developer/.codex/skills/karpathy-guidelines/SKILL.md) into context, follows its steps, and runs any helper scripts using its own toolset (`run_command`, `view_file`, etc.).
 
 ---
 
@@ -3360,9 +3360,9 @@ perform deep secutiy scan for the project and find the vunribilites within the p
 
 ### 🤖 Assistant (Step 1418 • 2026-09-19T10:36:18Z)
 
-The project-specific Codex Security skill suite has been installed into [`.agents/skills/`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/.agents/skills) and [`.agents/codex-security/`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/.agents/codex-security), and an exhaustive deep security scan of **VardhamanDesk** was performed following the `$codex-security:deep-security-scan` methodology.
+The project-specific Codex Security skill suite has been installed into [`.agents/skills/`](./.agents/skills) and [`.agents/codex-security/`](./.agents/codex-security), and an exhaustive deep security scan of **VardhamanDesk** was performed following the `$codex-security:deep-security-scan` methodology.
 
-As instructed, **no remediation code has been executed**. The complete findings and proposed remedies have been documented in the [Implementation Plan](file:///home/mehulgolecha/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/implementation_plan.md).
+As instructed, **no remediation code has been executed**. The complete findings and proposed remedies have been documented in the [Implementation Plan](~/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/implementation_plan.md).
 
 ---
 
@@ -3370,19 +3370,19 @@ As instructed, **no remediation code has been executed**. The complete findings 
 
 | Finding ID | Severity | Category / CWE | Summary & Root Cause |
 |---|---|---|---|
-| **VULN-01** | **High** | CWE-840 / CWE-284 | **Broken Status Lifecycle & Post-Lock Re-opening**: [`app/Models/Invoice.php:52-74`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Invoice.php#L52-L74) does not restrict modifications to `'status'` or prevent backwards transitions from `SENT` or `PAID` back to `DRAFT`. This allows bypassing financial locks and mutating or deleting statutory tax records. |
-| **VULN-02** | **Medium** | CWE-639 / CWE-862 | **IDOR in Invoice Drafting Service**: [`app/Services/InvoiceDraftService.php:30`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Services/InvoiceDraftService.php#L30) explicitly bypasses global scopes (`Client::withoutGlobalScopes()`) without verifying user ownership of the client, permitting sales users to bind invoices to unassigned clients. |
-| **VULN-03** | **Medium** | CWE-284 / CWE-706 | **Client Soft-Deletion Ledger Concealment & PDF DoS**: [`app/Policies/ClientPolicy.php:45-48`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Policies/ClientPolicy.php#L45-L48) allows deleting clients with active/sent invoices. Soft-deleting a client hides all historic
+| **VULN-01** | **High** | CWE-840 / CWE-284 | **Broken Status Lifecycle & Post-Lock Re-opening**: [`app/Models/Invoice.php:52-74`](./app/Models/Invoice.php#L52-L74) does not restrict modifications to `'status'` or prevent backwards transitions from `SENT` or `PAID` back to `DRAFT`. This allows bypassing financial locks and mutating or deleting statutory tax records. |
+| **VULN-02** | **Medium** | CWE-639 / CWE-862 | **IDOR in Invoice Drafting Service**: [`app/Services/InvoiceDraftService.php:30`](./app/Services/InvoiceDraftService.php#L30) explicitly bypasses global scopes (`Client::withoutGlobalScopes()`) without verifying user ownership of the client, permitting sales users to bind invoices to unassigned clients. |
+| **VULN-03** | **Medium** | CWE-284 / CWE-706 | **Client Soft-Deletion Ledger Concealment & PDF DoS**: [`app/Policies/ClientPolicy.php:45-48`](./app/Policies/ClientPolicy.php#L45-L48) allows deleting clients with active/sent invoices. Soft-deleting a client hides all historic
 <truncated 5746 bytes>
 ionService`.
 
 #### 5. VULN-05 (Low): Missing Model-Level Guard on Client Reassignment (CWE-284)
-- **Vulnerable Location:** [`app/Models/Client.php:17-36`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Client.php#L17-L36)
-- **Mechanics:** While [`Lead.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Lead.php#L77-L82) implements an Eloquent `updating` hook that throws `AuthorizationException` if a non-admin modifies `assigned_to`, `Client.php` does not have this model-level guard.
+- **Vulnerable Location:** [`app/Models/Client.php:17-36`](./app/Models/Client.php#L17-L36)
+- **Mechanics:** While [`Lead.php`](./app/Models/Lead.php#L77-L82) implements an Eloquent `updating` hook that throws `AuthorizationException` if a non-admin modifies `assigned_to`, `Client.php` does not have this model-level guard.
 - **Remediation:** Add an identical `updating` check to `Client.php` for defense-in-depth.
 
 #### 6. VULN-06 (Low): Session & Cookie Production Hardening (CWE-311 / CWE-693)
-- **Vulnerable Location:** [`.env.example:32`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/.env.example#L32), [`config/session.php:172`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/config/session.php#L172)
+- **Vulnerable Location:** [`.env.example:32`](./.env.example#L32), [`config/session.php:172`](./config/session.php#L172)
 - **Mechanics:** `SESSION_ENCRYPT=false` is default, exposing plaintext session attributes in the database table. Cookie secure flags are optional unless deployed under HTTPS.
 - **Remediation:** Provide production deployment configurations specifying `SESSION_ENCRYPT=true` and `SESSION_SECURE_COOKIE=true`.
 
@@ -3391,9 +3391,9 @@ ionService`.
 ### Verification and Test Suite Status
 - **Current Test Suite:** `php artisan test` ran 94 tests with 424 assertions, **100% passing**.
 - **Dependency Audit:** `composer audit` ran with **0 known CVEs/advisories**.
-- **Remediation Plan:** Detailed in [implementation_plan.md](file:///home/mehulgolecha/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/implementation_plan.md) with dedicated security regression tests planned in `tests/Feature/SecurityHardeningTest.php`.
+- **Remediation Plan:** Detailed in [implementation_plan.md](~/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/implementation_plan.md) with dedicated security regression tests planned in `tests/Feature/SecurityHardeningTest.php`.
 
-Please review the [implementation_plan.md](file:///home/mehulgolecha/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/implementation_plan.md). When you are ready, let me know and I will proceed with executing the fixes.
+Please review the [implementation_plan.md](~/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/implementation_plan.md). When you are ready, let me know and I will proceed with executing the fixes.
 
 <!-- GOAL_COMPLETE -->
 
@@ -3574,32 +3574,32 @@ The remediation plan has been implemented, verified, and pushed to the repositor
 ### Key Remediations Implemented
 
 1. **Financial State Lifecycle & Post-Lock Tampering Protection (VULN-01)**:
-   - **[`app/Models/Invoice.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Invoice.php)**: Prevented locked invoices (`SENT`, `PARTIALLY_PAID`, `PAID`) from transitioning back to `DRAFT`. Added `'invoice_number'`, `'financial_year'`, and `'sequence_number'` to the protected immutable fields array, ensuring sequence and status cannot be manipulated post-finalization.
+   - **[`app/Models/Invoice.php`](./app/Models/Invoice.php)**: Prevented locked invoices (`SENT`, `PARTIALLY_PAID`, `PAID`) from transitioning back to `DRAFT`. Added `'invoice_number'`, `'financial_year'`, and `'sequence_number'` to the protected immutable fields array, ensuring sequence and status cannot be manipulated post-finalization.
 
 2. **IDOR Prevention in Invoice Drafting (VULN-02)**:
-   - **[`app/Services/InvoiceDraftService.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Services/InvoiceDraftService.php)**: Added client ownership validation in both `createDraft()` and `updateDraft()`. Unauthorized sales users attempting to bind an invoice to an unassigned client now receive an `AuthorizationException`.
+   - **[`app/Services/InvoiceDraftService.php`](./app/Services/InvoiceDraftService.php)**: Added client ownership validation in both `createDraft()` and `updateDraft()`. Unauthorized sales users attempting to bind an invoice to an unassigned client now receive an `AuthorizationException`.
 
 3. **Client Soft-Delete Ledger Protection & Scope Resilience (VULN-03)**:
-   - **[`app/Models/Client.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Client.php) & [`app/Policies/ClientPolicy.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Policies/ClientPolicy.php)**: Blocked deletion of clients that have active/non-draft invoices.
-   - **[`app/Models/Scopes/InvoiceOwnershipScope.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Scopes/InvoiceOwnershipScope.php), [`app/Models/Scopes/PaymentOwnershipScope.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Scopes/PaymentOwnershipScope.php), [`app/Policies/InvoicePolicy.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Policies/InvoicePolicy.php), [`app/Policies/PaymentPolicy.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Policies/PaymentPolicy.php)**: Included `withT
+   - **[`app/Models/Client.php`](./app/Models/Client.php) & [`app/Policies/ClientPolicy.php`](./app/Policies/ClientPolicy.php)**: Blocked deletion of clients that have active/non-draft invoices.
+   - **[`app/Models/Scopes/InvoiceOwnershipScope.php`](./app/Models/Scopes/InvoiceOwnershipScope.php), [`app/Models/Scopes/PaymentOwnershipScope.php`](./app/Models/Scopes/PaymentOwnershipScope.php), [`app/Policies/InvoicePolicy.php`](./app/Policies/InvoicePolicy.php), [`app/Policies/PaymentPolicy.php`](./app/Policies/PaymentPolicy.php)**: Included `withT
 <truncated 43 bytes>
 torical invoices and payments remain visible and downloadable via PDF even if a client is archived.
 
 4. **Numerical Bounds & Input Validation (VULN-04)**:
-   - **[`app/Filament/Resources/Invoices/Schemas/InvoiceForm.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Filament/Resources/Invoices/Schemas/InvoiceForm.php)**: Added `minValue(0.01)` to `quantity` and `rate` fields.
-   - **[`app/Services/InvoiceCalculationService.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Services/InvoiceCalculationService.php)**: Enforced that `quantity > 0` and `rate >= 0`, throwing a `DomainException` on invalid values.
+   - **[`app/Filament/Resources/Invoices/Schemas/InvoiceForm.php`](./app/Filament/Resources/Invoices/Schemas/InvoiceForm.php)**: Added `minValue(0.01)` to `quantity` and `rate` fields.
+   - **[`app/Services/InvoiceCalculationService.php`](./app/Services/InvoiceCalculationService.php)**: Enforced that `quantity > 0` and `rate >= 0`, throwing a `DomainException` on invalid values.
 
 5. **Client Reassignment Model Guard (VULN-05)**:
-   - **[`app/Models/Client.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Client.php)**: Added an Eloquent `updating()` check matching [`Lead.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Lead.php#L77-L82) that prevents sales representatives from modifying `'assigned_to'`.
+   - **[`app/Models/Client.php`](./app/Models/Client.php)**: Added an Eloquent `updating()` check matching [`Lead.php`](./app/Models/Lead.php#L77-L82) that prevents sales representatives from modifying `'assigned_to'`.
 
 6. **Production Configuration Hardening (VULN-06)**:
-   - **[`.env.example`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/.env.example)**: Added production guidance for enabling `SESSION_ENCRYPT=true` and `SESSION_SECURE_COOKIE=true`.
+   - **[`.env.example`](./.env.example)**: Added production guidance for enabling `SESSION_ENCRYPT=true` and `SESSION_SECURE_COOKIE=true`.
 
 ---
 
 ### Verification & Test Suite
 
-A dedicated security test suite was created in [`tests/Feature/SecurityHardeningTest.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/SecurityHardeningTest.php) covering all remediated scenarios:
+A dedicated security test suite was created in [`tests/Feature/SecurityHardeningTest.php`](./tests/Feature/SecurityHardeningTest.php) covering all remediated scenarios:
 
 ```bash
 php artisan test
@@ -3610,7 +3610,7 @@ php artisan test
 - **Failures**: **0**
 - **Git Commit & Push**: `c7bdd49` pushed to `https://github.com/MSpider3/VardhamanDesk.git`
 
-The documentation has been updated in [walkthrough.md](file:///home/mehulgolecha/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/walkthrough.md).
+The documentation has been updated in [walkthrough.md](~/.gemini/antigravity-ide/brain/ce4ecfe2-b282-44d4-b48b-d9d6a01b8d72/walkthrough.md).
 
 <!-- GOAL_COMPLETE -->
 
@@ -3640,15 +3640,15 @@ The core business logic and security architecture are built to enterprise standa
   - The payment ledger is append-only; payments cannot be modified or deleted, and overpayments are rejected.
 - **3-Layer Security & Isolation:**
   - Database level: Foreign key constraints with `RESTRICT` on financial parents.
-  - Eloquent level: Global scopes ([`InvoiceOwnershipScope`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Scopes/InvoiceOwnershipScope.php), [`ClientOwnershipScope`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Scopes/ClientOwnershipScope.php), etc.) and model hooks prevent horizontal privilege escalation (IDOR) and unauthorized client/lead reassignments.
+  - Eloquent level: Global scopes ([`InvoiceOwnershipScope`](./app/Models/Scopes/InvoiceOwnershipScope.php), [`ClientOwnershipScope`](./app/Models/Scopes/ClientOwnershipScope.php), etc.) and model hooks prevent horizontal privilege escalation (IDOR) and unauthorized client/lead reassignments.
   - Policy level: Fine-grained permissions separating Admins from Sales representatives.
 - **Tax Calculation Engine:**
   - Automated Intra-state (50/50 CGST + SGST) vs Inter-state (IGST) split based on place of supply and company state code.
-  - GSTIN regex and state-code cross-validation ([`ValidGstin`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Rules/Va
+  - GSTIN regex and state-code cross-validation ([`ValidGstin`](./app/Rules/Va
 <truncated 469 bytes>
-Seeded in database via [`DatabaseSeeder`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/database/seeders/DatabaseSeeder.php) | An Admin UI page in Filament to edit legal name, address, GSTIN, PAN, bank account/IFSC, and upload a logo without touching the database directly. |
+Seeded in database via [`DatabaseSeeder`](./database/seeders/DatabaseSeeder.php) | An Admin UI page in Filament to edit legal name, address, GSTIN, PAN, bank account/IFSC, and upload a logo without touching the database directly. |
 | **Email Delivery** | Local `log` mail driver; invoices are downloaded as PDF manually | Configure SMTP/SES/Postmark to automatically email the generated PDF invoice to the client's email upon clicking **Send**. |
-| **User Profile & Password Self-Service** | Passwords can only be changed by an Admin via [`UserResource`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Filament/Resources/Users/UserResource.php) | Allow sales users to update their own password and profile details, plus standard "Forgot Password" email reset flow. |
+| **User Profile & Password Self-Service** | Passwords can only be changed by an Admin via [`UserResource`](./app/Filament/Resources/Users/UserResource.php) | Allow sales users to update their own password and profile details, plus standard "Forgot Password" email reset flow. |
 | **Production Server Hardening** | Development environment (`APP_DEBUG=true`, `APP_ENV=local`) | Set `APP_DEBUG=false`, `APP_ENV=production`, enforce HTTPS, set `SESSION_SECURE_COOKIE=true` and `SESSION_ENCRYPT=true`. |
 | **Database Backups** | None configured | An automated daily backup solution (e.g. `spatie/laravel-backup` to S3 or automated MySQL dump cron). |
 
@@ -3742,12 +3742,12 @@ Here is the item-by-item verification mapping every specification in the prompt 
 
 | Prompt Specification | Status | Implementation & Code Evidence |
 | :--- | :---: | :--- |
-| **Users and roles**<br>• Two roles: Admin and Sales<br>• Admin sees/does everything<br>• Sales only sees own leads & clients | **100% Complete** | • [`app/Enums/UserRole.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Enums/UserRole.php): `Admin` and `Sales`.<br>• Global Eloquent scopes ([`LeadOwnershipScope`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Scopes/LeadOwnershipScope.php), [`ClientOwnershipScope`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Scopes/ClientOwnershipScope.php), [`InvoiceOwnershipScope`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Scopes/InvoiceOwnershipScope.php), [`PaymentOwnershipScope`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/Scopes/PaymentOwnershipScope.php)) strictly filter records to the authenticated sales rep while giving global access to Admins.<br>• Enforced by policies ([`LeadPolicy`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Policies/LeadPolicy.php), [`ClientPolicy`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Policies/ClientPolicy.php), [`InvoicePolicy`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Policies/InvoicePolicy.php), [`PaymentPolicy`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Policies/PaymentPolicy.php)). |
+| **Users and roles**<br>• Two roles: Admin and Sales<br>• Admin sees/does everything<br>• Sales only sees own leads & clients | **100% Complete** | • [`app/Enums/UserRole.php`](./app/Enums/UserRole.php): `Admin` and `Sales`.<br>• Global Eloquent scopes ([`LeadOwnershipScope`](./app/Models/Scopes/LeadOwnershipScope.php), [`ClientOwnershipScope`](./app/Models/Scopes/ClientOwnershipScope.php), [`InvoiceOwnershipScope`](./app/Models/Scopes/InvoiceOwnershipScope.php), [`PaymentOwnershipScope`](./app/Models/Scopes/PaymentOwnershipScope.php)) strictly filter records to the authenticated sales rep while giving global access to Admins.<br>• Enforced by policies ([`LeadPolicy`](./app/Policies/LeadPolicy.php), [`ClientPolicy`](./app/Policies/ClientPolicy.php), [`InvoicePolicy`](./app/Policies/InvoicePolicy.php), [`PaymentPolicy`](./app/Policies/PaymentPolicy.php)). |
 | **Leads**<br>• Capture name, company, phone, email, source, salesperson<br>• Statuses: New, Contacted, Qualified, Converted, Lost<br>• Add notes & set follow-up date<br>• 
 <truncated 5858 bytes>
-Complete** | **103 passing Pest tests** (456 assertions) in `tests/Feature/` covering:<br>• **GST calculation**: [`InvoiceDraftAndCalculationTest.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/InvoiceDraftAndCalculationTest.php)<br>• **Invoice numbering & atomicity**: [`InvoiceSendAndNumberingTest.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/InvoiceSendAndNumberingTest.php)<br>• **Permissions & authorization**: [`PaymentAuthorizationTest.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/PaymentAuthorizationTest.php), [`LeadAndClientAuthorizationTest.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/LeadAndClientAuthorizationTest.php), and [`SecurityHardeningTest.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/SecurityHardeningTest.php). |
-| **4. A short note listing any assumptions you made and anything left incomplete** | **100% Complete** | Detailed in [`docs/05-assumptions-and-open-questions.md`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/05-assumptions-and-open-questions.md) and summarized directly in the [Submission Checklist of README.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/README.md#submission-checklist--prompt-verification) (e.g. explicitly out-of-scope: email dispatching, credit notes, E-invoicing; verified GST rates per CBIC Notification No. 9/2025). |
-| **5. Your AI chat history for this project** | **100% Complete** | Sanitized, milestone-by-milestone chat and design histories are indexed in [`docs/ai-history/INDEX.md`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/ai-history/INDEX.md). |
+Complete** | **103 passing Pest tests** (456 assertions) in `tests/Feature/` covering:<br>• **GST calculation**: [`InvoiceDraftAndCalculationTest.php`](./tests/Feature/InvoiceDraftAndCalculationTest.php)<br>• **Invoice numbering & atomicity**: [`InvoiceSendAndNumberingTest.php`](./tests/Feature/InvoiceSendAndNumberingTest.php)<br>• **Permissions & authorization**: [`PaymentAuthorizationTest.php`](./tests/Feature/PaymentAuthorizationTest.php), [`LeadAndClientAuthorizationTest.php`](./tests/Feature/LeadAndClientAuthorizationTest.php), and [`SecurityHardeningTest.php`](./tests/Feature/SecurityHardeningTest.php). |
+| **4. A short note listing any assumptions you made and anything left incomplete** | **100% Complete** | Detailed in [`docs/05-assumptions-and-open-questions.md`](./05-assumptions-and-open-questions.md) and summarized directly in the [Submission Checklist of README.md](./README.md#submission-checklist--prompt-verification) (e.g. explicitly out-of-scope: email dispatching, credit notes, E-invoicing; verified GST rates per CBIC Notification No. 9/2025). |
+| **5. Your AI chat history for this project** | **100% Complete** | Sanitized, milestone-by-milestone chat and design histories are indexed in [`docs/ai-history/INDEX.md`](./ai-history/INDEX.md). |
 
 ---
 
@@ -3758,7 +3758,7 @@ Every requirement in your prompt—from business features and architectural safe
 
 ### 👤 User (Step 1528 • 2026-09-19T12:24:33Z)
 
-/goal read and follow the new @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/plan.md] with added :
+/goal read and follow the new @[plan.md] with added :
 Section 6 — Deep Security Audit — 16 findings, each with:
 - Severity (Critical/High/Medium/Low) and CWE ID
 - Exact file reference with line number
@@ -3780,7 +3780,7 @@ and implemt it
 
 ### 👤 User (Step 1529 • 2026-09-19T12:25:56Z)
 
-/goal read and follow the new  @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/plan.md]  with added :
+/goal read and follow the new  @[plan.md]  with added :
 Section 6 — Deep Security Audit — 16 findings, each with:
 - Severity (Critical/High/Medium/Low) and CWE ID
 - Exact file reference with line number
@@ -4356,7 +4356,7 @@ I have started the Pest test suite to establish our baseline before beginning im
 
 ### 🤖 Assistant (Step 1809 • 2026-09-19T12:36:56Z)
 
-All 16 security audit remediations across **Phase 1**, **Phase 2**, and **Phase 3** have been implemented, verified with automated tests, and pushed to GitHub. As instructed, [`plan.md`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md) was added to [`.gitignore`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/.gitignore) and untracked from Git before pushing.
+All 16 security audit remediations across **Phase 1**, **Phase 2**, and **Phase 3** have been implemented, verified with automated tests, and pushed to GitHub. As instructed, [`plan.md`](./plan.md) was added to [`.gitignore`](./.gitignore) and untracked from Git before pushing.
 
 ---
 
@@ -4364,13 +4364,13 @@ All 16 security audit remediations across **Phase 1**, **Phase 2**, and **Phase 
 
 #### Phase 1 — Critical & High (P1.1 – P1.6)
 - **P1.1 (Finding 1 — CWE-284):**
-  - Created and ran migration [`2026_09_19_180000_add_is_active_to_users_table.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/database/migrations/2026_09_19_180000_add_is_active_to_users_table.php) adding `is_active` (`default(true)`).
-  - Updated [User.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/User.php) fillable, cast, and gated [canAccessPanel()](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Models/User.php#L38-L41) on `$this->is_active === true && $this->email_verified_at !== null`.
-  - Added `is_active` toggle in [UserForm.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Filament/Resources/Users/Schemas/UserForm.php#L30-L36) (visible to admins, disabled for self) and boolean status column in [UsersTable.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Filament/Resources/Users/Tables/UsersTable.php#L30-L32).
-  - Added self-deactivation guard in [EditUser.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Filament/Resources/Users/Pages/EditUser.php#L20-L27).
-  - Added active default and `inactive()` state in [UserFactory.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/database/factories/UserFactory.php#L67-L75).
+  - Created and ran migration [`2026_09_19_180000_add_is_active_to_users_table.php`](./database/migrations/2026_09_19_180000_add_is_active_to_users_table.php) adding `is_active` (`default(true)`).
+  - Updated [User.php](./app/Models/User.php) fillable, cast, and gated [canAccessPanel()](./app/Models/User.php#L38-L41) on `$this->is_active === true && $this->email_verified_at !== null`.
+  - Added `is_active` toggle in [UserForm.php](./app/Filament/Resources/Users/Schemas/UserForm.php#L30-L36) (visible to admins, disabled for self) and boolean status column in [UsersTable.php](./app/Filament/Resources/Users/Tables/UsersTable.php#L30-L32).
+  - Added self-deactivation guard in [EditUser.php](./app/Filament/Resources/Users/Pages/EditUser.php#L20-L27).
+  - Added active default and `inactive()` state in [UserFactory.php](./database/factories/UserFactory.php#L67-L75).
 - **P1.2 (Finding 2 — CWE-798):**
-  - Added production guard in [DatabaseSeeder.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/databa
+  - Added production guard in [DatabaseSeeder.php](./databa
 <truncated 3837 bytes>
 ages/CreateUser.php#L12-L17) in `CreateUser.php` auto-setting `email_verified_at = now()`.
 
@@ -4378,8 +4378,8 @@ ages/CreateUser.php#L12-L17) in `CreateUser.php` auto-setting `email_verified_at
 
 #### Phase 3 — Low / Hardening (P3.1 – P3.4)
 - **P3.1 & P3.3 (Findings 13 & 15 — CWE-319 / CWE-1021):**
-  - Created [SecurityHeaders.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Http/Middleware/SecurityHeaders.php) middleware emitting `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: same-origin`, `Permissions-Policy`, and `Content-Security-Policy`.
-  - Registered middleware in [bootstrap/app.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/bootstrap/app.php#L15-L17) for `web` and in [AdminPanelProvider.php](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/app/Providers/Filament/AdminPanelProvider.php#L56) for the Filament admin panel.
+  - Created [SecurityHeaders.php](./app/Http/Middleware/SecurityHeaders.php) middleware emitting `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: same-origin`, `Permissions-Policy`, and `Content-Security-Policy`.
+  - Registered middleware in [bootstrap/app.php](./bootstrap/app.php#L15-L17) for `web` and in [AdminPanelProvider.php](./app/Providers/Filament/AdminPanelProvider.php#L56) for the Filament admin panel.
   - Enforced HTTPS redirect and scheme in production.
 - **P3.2 (Finding 14 — CWE-532):**
   - Set `LOG_LEVEL=warning` in `.env` and updated `.env.example` with production logging guidance.
@@ -4390,13 +4390,13 @@ ages/CreateUser.php#L12-L17) in `CreateUser.php` auto-setting `email_verified_at
 
 ### Verification & Delivery Status
 
-- **Automated Tests:** Full Pest test suite passes cleanly with **111 tests and 488 assertions** (including 8 dedicated tests in [`SecurityAuditRemediationTest.php`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/tests/Feature/SecurityAuditRemediationTest.php)).
+- **Automated Tests:** Full Pest test suite passes cleanly with **111 tests and 488 assertions** (including 8 dedicated tests in [`SecurityAuditRemediationTest.php`](./tests/Feature/SecurityAuditRemediationTest.php)).
 - **Code Standards:** Laravel Pint passed with zero formatting errors.
 - **Checklist & Status in `plan.md`:**
   - Section 8: All 6 Security Gates marked `[x]`.
   - Section 9: Status updated to **Ready for Production** / **Remediated & Verified**.
 - **Git State:**
-  - `plan.md` appended to [`.gitignore`](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/.gitignore) and untracked from git index via `git rm --cached plan.md`.
+  - `plan.md` appended to [`.gitignore`](./.gitignore) and untracked from git index via `git rm --cached plan.md`.
   - Changes committed (`bc42b5c`) and pushed to `origin/main`. Working tree is completely clean.
 
 <!-- GOAL_COMPLETE -->

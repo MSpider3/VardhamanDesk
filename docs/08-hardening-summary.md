@@ -160,11 +160,11 @@ For each item, we detail:
 ## Security Audit & Vulnerability Documentation
 
 For formal vulnerability write-ups, attack traces, CVSS vectors, and architectural defense evaluations, refer to the security index:
-- [Security Disclosure & Architectural Hardening Index](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/security/INDEX.md)
-  - [Architectural Hardening Proposal](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/security/01-architectural-hardening-proposal.md)
-  - [VULN-01: Invoices Table Missing Column Crash on Sort](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/security/VULN-01-mysql-invoices-sort-crash/report.md)
-  - [VULN-02: Lead Conversion Concurrency Race Condition](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/security/VULN-02-lead-conversion-concurrency-race/report.md)
-  - [VULN-03: Financial Year Counter Bootstrap Race Condition](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/security/VULN-03-fy-counter-bootstrap-race/report.md)
-  - [VULN-04: Cross-User Lead Conversion IDOR](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/security/VULN-04-cross-user-lead-conversion-idor/report.md)
-  - [VULN-05: Statutory FY Boundary Bypass via Backdating](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/security/VULN-05-fy-backdating-closed-period/report.md)
-  - [VULN-06: Permissive Content-Security-Policy Wildcard Bypass](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/security/VULN-06-permissive-csp-wildcard/report.md)
+- [Security Disclosure & Architectural Hardening Index](./security/INDEX.md)
+  - [Architectural Hardening Proposal](./security/01-architectural-hardening-proposal.md)
+  - [VULN-01: Invoices Table Missing Column Crash on Sort](./security/VULN-01-mysql-invoices-sort-crash/report.md)
+  - [VULN-02: Lead Conversion Concurrency Race Condition](./security/VULN-02-lead-conversion-concurrency-race/report.md)
+  - [VULN-03: Financial Year Counter Bootstrap Race Condition](./security/VULN-03-fy-counter-bootstrap-race/report.md)
+  - [VULN-04: Cross-User Lead Conversion IDOR](./security/VULN-04-cross-user-lead-conversion-idor/report.md)
+  - [VULN-05: Statutory FY Boundary Bypass via Backdating](./security/VULN-05-fy-backdating-closed-period/report.md)
+  - [VULN-06: Permissive Content-Security-Policy Wildcard Bypass](./security/VULN-06-permissive-csp-wildcard/report.md)

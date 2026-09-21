@@ -8,7 +8,7 @@
 
 ### 👤 User (Step 0 • 2026-09-18T09:52:26Z)
 
-read both the files in the @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/docs]  folder it constians 2 distins docs craeted by 2 different ai. you'll understand the probject but which docs should we follow to craete the project or shout we megre the 2 docs.
+read both the files in the @[docs]  folder it constians 2 distins docs craeted by 2 different ai. you'll understand the probject but which docs should we follow to craete the project or shout we megre the 2 docs.
 
 ---
 
@@ -148,7 +148,7 @@ Both AI document sets were written against the **exact same project brief**: an 
   * Invoices start as **Draft** (shows `"DRAFT"`, no sequence number allocated, freely editable, can be deleted).
   * On transition to **Sent**, sequential invoice number `VI/YYYY-YY/NNNN` is allocated atomically, 
 <truncated 3175 bytes>
--history-and-explainability.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/chatgpt/docs/13-ai-history-and-explainability.md) gives an exact template for documenting AI prompts, accepted code, and rationale, as required by assignment grading criteria.
+-history-and-explainability.md](./chatgpt/docs/13-ai-history-and-explainability.md) gives an exact template for documenting AI prompts, accepted code, and rationale, as required by assignment grading criteria.
 
 ---
 
@@ -266,7 +266,7 @@ Claude’s docs are **100% complete, fully self-contained, and technically super
 
 Only **4 assignment meta/procedural items** related to presentation and submission (none of which affect the code):
 
-1. **The 30-Minute Demo Time Breakdown ([11-demo-checklist.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/chatgpt/docs/11-demo-checklist.md)):**
+1. **The 30-Minute Demo Time Breakdown ([11-demo-checklist.md](./chatgpt/docs/11-demo-checklist.md)):**
    * *Claude’s doc:* Tells you *what* to demo in bullet points.
    * *ChatGPT’s doc:* Breaks the 30 minutes into an exact timed schedule:
      * `0–3 min`: Problem, architecture, roles
@@ -278,18 +278,18 @@ Only **4 assignment meta/procedural items** related to presentation and submissi
      * `27–29 min`: Dashboard metrics
      * `29–30 min`: Pest tests, DB schema, Git history
 
-2. **The Conventional Git Commit Checklist ([10-git-commit-plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/chatgpt/docs/10-git-commit-plan.md)):**
+2. **The Conventional Git Commit Checklist ([10-git-commit-plan.md](./chatgpt/docs/10-git-commit-plan.md)):**
    * *Claude’s doc:* Says *"meaningful, incremental commits per logical change"*.
    * *ChatGPT’s doc:* Provides the exact list of conventional commit messages ready to copy-paste (e.g., `feat(leads): add lead lifecycle`, `feat(invoices): allocate numbers on send`).
 
-3. **The AI Explainability Log Template ([13-ai-history-and-explainability.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/chatgpt/docs/13-ai-history-and-explainability.md)):**
+3. **The AI Explainability Log Template ([13-ai-history-and-explainability.md](./chatgpt/docs/13-ai-history-and-explainability.md)):**
    * *Claude’s doc:* Lists *"AI chat history exported for submission"* as a checkbox.
    * *ChatGPT’s doc:* Gives a fill-in template if the assignment asks you to explain each AI prompt:
      ```text
      Task: / Prompt summary: / AI suggestion: / What I accepted: / What I changed: / Why: / Tests run: / Result:
      ```
 
-4. **Explicit naming of Laravel Action classes ([03-architecture.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/chatgpt/docs/03-architecture.md)):**
+4. **Explicit naming of Laravel Action classes ([03-architecture.md](./chatgpt/docs/03-architecture.md)):**
    * ChatGPT suggested extracting multi-step operations into dedicated Action classes (`ConvertLeadToClient`, `InvoiceNumberAllocator`, `CalculateInvoiceTotals`, `RecordPayment`). While Claude achieves the same logic, it embeds it across models and Filament resources. Using Action classes is slightly cleaner architectural hygiene.
 
 ---
@@ -421,7 +421,7 @@ We just verified this directly against **Packagist** and the live web:
 ### Which is better?
 
 * **On Tech Stack & Versions:** **ChatGPT is much better.** You should scaffold using **Laravel 13** and **Filament 5**.
-* **On Business Logic, DB Schema, and GST Rules:** **Claude is still better.** Claude's database schema ([02-database-schema.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/claude/02-database-schema.md)), concurrency locking design, CBIC notification breakdown, and permission defense-in-depth are significantly more detailed and production-ready than ChatGPT's.
+* **On Business Logic, DB Schema, and GST Rules:** **Claude is still better.** Claude's database schema ([02-database-schema.md](./claude/02-database-schema.md)), concurrency locking design, CBIC notification breakdown, and permission defense-in-depth are significantly more detailed and production-ready than ChatGPT's.
 
 ### Final Verdict & Recommendation
 
@@ -497,25 +497,25 @@ The tech stack and version references from ChatGPT have been updated across Clau
 
 ### Updated Files
 
-1. **[docs/claude/01-project-overview.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/claude/01-project-overview.md#L27-L35)**
+1. **[docs/claude/01-project-overview.md](./claude/01-project-overview.md#L27-L35)**
    * Updated framework to **Laravel 13.x** (latest stable release).
    * Updated UI framework to **Filament 5.x** (powered by **Livewire 4.x**).
    * Updated PDF package specification for Laravel 13 compatibility.
 
-2. **[docs/claude/05-assumptions-and-open-questions.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/claude/05-assumptions-and-open-questions.md#L5-L7)**
+2. **[docs/claude/05-assumptions-and-open-questions.md](./claude/05-assumptions-and-open-questions.md#L5-L7)**
    * Updated confirmed platform choices to **Laravel 13.x + Filament 5.x** (powered by Livewire 4.x).
 
-3. **[docs/claude/AGENT.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/docs/claude/AGENT.md#L14-L21)**
+3. **[docs/claude/AGENT.md](./claude/AGENT.md#L14-L21)**
    * Set non-negotiable tech stack to **Laravel 13.x**, **Filament 5.x**, and **Livewire 4.x**.
 
-4. **[output.json](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/output.json#L9-L15)**
+4. **[output.json](./output.json#L9-L15)**
    * Corrected the resolution and rationale to recognize **Laravel 13.x**, **Filament 5.x**, and **Livewire 4.x** as the verified active releases.
 
 ---
 
 ### 👤 User (Step 120 • 2026-09-19T06:58:54Z)
 
-i have implemted the project using the claude docs now i want to ask what should do more with the chatgpt docs (@[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/.docs_for later_referal] ) if there is somehting from these docs which can be used edit the @[/run/media/mehulgolecha/Extra Volume/Projects/VardhamanDesk/plan.md] for that
+i have implemted the project using the claude docs now i want to ask what should do more with the chatgpt docs (@[.docs_for later_referal] ) if there is somehting from these docs which can be used edit the @[plan.md] for that
 
 ---
 
@@ -585,7 +585,7 @@ i have implemted the project using the claude docs now i want to ask what should
 
 ### 🤖 Assistant (Step 155 • 2026-09-19T07:00:11Z)
 
-[plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md) has been updated to integrate the valuable operational, presentation, and audit assets from the ChatGPT documentation ([.docs_for later_referal](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/.docs_for%20later_referal)).
+[plan.md](./plan.md) has been updated to integrate the valuable operational, presentation, and audit assets from the ChatGPT documentation ([.docs_for later_referal](./.docs_for%20later_referal)).
 
 ---
 
@@ -616,7 +616,7 @@ i have implemted the project using the claude docs now i want to ask what should
 
 ### What to do with the `.docs_for later_referal` folder now
 
-Every useful concept from ChatGPT's docs (tech stack versions, Action-class architecture, timed demo schedule, permissions matrix, and CA questions) is now **100% absorbed** into the codebase, test suite, `docs/ai-history/`, and [plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md).
+Every useful concept from ChatGPT's docs (tech stack versions, Action-class architecture, timed demo schedule, permissions matrix, and CA questions) is now **100% absorbed** into the codebase, test suite, `docs/ai-history/`, and [plan.md](./plan.md).
 
 You have two clean options for `.docs_for later_referal`:
 1. **Leave it as-is:** Because the folder name begins with a dot (`.`), it is hidden from standard directory listings and does not interfere with Laravel, Composer, or Git.
@@ -640,7 +640,7 @@ i want you remake the plan.md with those points not append in the plan.md as it 
 
 ### 🤖 Assistant (Step 162 • 2026-09-19T07:02:39Z)
 
-[plan.md](file:///run/media/mehulgolecha/Extra%20Volume/Projects/VardhamanDesk/plan.md) has been completely remade from the ground up as a unified **Master System Blueprint, Verification & Delivery Plan**.
+[plan.md](./plan.md) has been completely remade from the ground up as a unified **Master System Blueprint, Verification & Delivery Plan**.
 
 Rather than appending extra notes to an outdated implementation draft, the entire document was rewritten to reflect the completed state of the project, seamlessly integrating the operational and presentation assets from ChatGPT's documentation.
 

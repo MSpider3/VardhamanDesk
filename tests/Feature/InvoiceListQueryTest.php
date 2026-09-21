@@ -97,10 +97,10 @@ test('Item 2: sorting invoices by paid_amount and outstanding_amount succeeds wi
         ->assertCanSeeTableRecords([$invC, $invB, $invA], inOrder: true);
 });
 
-test('Item 4: invoice list query count is constant between 5 and 50 invoices (no N+1)', function () {
+test('Item 4: invoice list query count is constant between 5 and 50 invoices (no N+1) including invoices with zero payments', function () {
     $this->actingAs($this->admin);
 
-    // Seed 5 invoices with payments
+    // Seed 5 invoices: 4 with zero payments, 1 with payment
     for ($i = 0; $i < 5; $i++) {
         $inv = Invoice::factory()->create([
             'status' => InvoiceStatus::SENT,
@@ -108,7 +108,9 @@ test('Item 4: invoice list query count is constant between 5 and 50 invoices (no
             'total' => '1000.00',
             'created_by' => $this->admin->id,
         ]);
-        Payment::factory()->create(['invoice_id' => $inv->id, 'amount' => '250.00', 'recorded_by' => $this->admin->id]);
+        if ($i === 0) {
+            Payment::factory()->create(['invoice_id' => $inv->id, 'amount' => '250.00', 'recorded_by' => $this->admin->id]);
+        }
     }
 
     DB::flushQueryLog();
@@ -119,7 +121,7 @@ test('Item 4: invoice list query count is constant between 5 and 50 invoices (no
     $queriesFor5 = count(DB::getQueryLog());
     DB::disableQueryLog();
 
-    // Now add 45 more invoices (total 50)
+    // Now add 45 more invoices (total 50): mostly with zero payments, some with payments
     for ($i = 0; $i < 45; $i++) {
         $inv = Invoice::factory()->create([
             'status' => InvoiceStatus::SENT,
@@ -127,7 +129,9 @@ test('Item 4: invoice list query count is constant between 5 and 50 invoices (no
             'total' => '1000.00',
             'created_by' => $this->admin->id,
         ]);
-        Payment::factory()->create(['invoice_id' => $inv->id, 'amount' => '250.00', 'recorded_by' => $this->admin->id]);
+        if ($i % 5 === 0) {
+            Payment::factory()->create(['invoice_id' => $inv->id, 'amount' => '250.00', 'recorded_by' => $this->admin->id]);
+        }
     }
 
     DB::flushQueryLog();
@@ -138,7 +142,7 @@ test('Item 4: invoice list query count is constant between 5 and 50 invoices (no
     $queriesFor50 = count(DB::getQueryLog());
     DB::disableQueryLog();
 
-    // With N+1, 5 invoices would do ~15 queries and 50 invoices would do ~105 queries.
-    // Query count must be constant (equal or difference at most 1).
+    // With N+1, invoices with zero payments fall through and issue individual queries.
+    // Query count must be strictly constant (difference at most 1 query for session/pagination).
     expect($queriesFor50)->toBeLessThanOrEqual($queriesFor5 + 1);
 });

@@ -30,7 +30,7 @@ class InvoicesTable
         return $table
             ->modifyQueryUsing(fn (Builder $query) => $query
                 ->select('invoices.*')
-                ->withSum('payments as paid_amount', 'amount')
+                ->selectRaw('COALESCE((SELECT SUM(payments.amount) FROM payments WHERE payments.invoice_id = invoices.id), 0) as paid_amount')
                 ->selectRaw('(invoices.total - COALESCE((SELECT SUM(payments.amount) FROM payments WHERE payments.invoice_id = invoices.id), 0)) as outstanding_amount')
             )
             ->defaultSort('created_at', 'desc')

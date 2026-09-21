@@ -31,11 +31,22 @@ class ClientService
             ? $lead->status
             : LeadStatus::tryFrom($lead->status);
 
-        if ($currentStatus === LeadStatus::CONVERTED || $lead->client()->exists()) {
+        $existingClient = Client::withoutGlobalScopes()
+            ->withTrashed()
+            ->where('lead_id', $lead->id)
+            ->first();
+
+        // If an active (non-deleted) client already exists, reject
+        if ($existingClient && ! $existingClient->trashed()) {
             throw new DomainException('This lead has already been converted.');
         }
 
-        if ($currentStatus !== LeadStatus::QUALIFIED) {
+        if ($currentStatus === LeadStatus::CONVERTED && ! ($existingClient && $existingClient->trashed())) {
+            throw new DomainException('This lead has already been converted.');
+        }
+
+        // If lead is not qualified AND has no soft-deleted client to restore, reject
+        if ($currentStatus !== LeadStatus::QUALIFIED && ! ($existingClient && $existingClient->trashed())) {
             throw new DomainException('Only qualified leads can be converted to clients.');
         }
 
@@ -58,15 +69,25 @@ class ClientService
                     throw new AuthorizationException('You are not authorized to convert this lead.');
                 }
 
+                $existingLockedClient = Client::withoutGlobalScopes()
+                    ->withTrashed()
+                    ->where('lead_id', $lockedLead->id)
+                    ->lockForUpdate()
+                    ->first();
+
+                if ($existingLockedClient && ! $existingLockedClient->trashed()) {
+                    throw new DomainException('This lead has already been converted.');
+                }
+
                 $lockedStatus = $lockedLead->status instanceof LeadStatus
                     ? $lockedLead->status
                     : LeadStatus::tryFrom($lockedLead->status);
 
-                if ($lockedLead->client()->exists() || $lockedStatus === LeadStatus::CONVERTED) {
+                if ($lockedStatus === LeadStatus::CONVERTED && ! ($existingLockedClient && $existingLockedClient->trashed())) {
                     throw new DomainException('This lead has already been converted.');
                 }
 
-                if ($lockedStatus !== LeadStatus::QUALIFIED) {
+                if ($lockedStatus !== LeadStatus::QUALIFIED && ! ($existingLockedClient && $existingLockedClient->trashed())) {
                     throw new DomainException('Only qualified leads can be converted to clients.');
                 }
 
@@ -75,6 +96,22 @@ class ClientService
                 $lockedLead->save();
 
                 $resolvedState = IndianState::fromCodeOrName($state)?->value ?? $state;
+
+                if ($existingLockedClient && $existingLockedClient->trashed()) {
+                    $existingLockedClient->restore();
+                    $existingLockedClient->update([
+                        'assigned_to' => $lockedLead->assigned_to,
+                        'name' => $clientData['name'] ?? $lockedLead->name,
+                        'company' => $clientData['company'] ?? $lockedLead->company,
+                        'phone' => $clientData['phone'] ?? $lockedLead->phone,
+                        'email' => $clientData['email'] ?? $lockedLead->email,
+                        'billing_address' => $clientData['billing_address'],
+                        'state' => $resolvedState,
+                        'gstin' => $gstin,
+                    ]);
+
+                    return $existingLockedClient;
+                }
 
                 $client = Client::create([
                     'lead_id' => $lockedLead->id,

@@ -159,8 +159,10 @@ class Invoice extends Model
      */
     public function getPaidAmountAttribute(): string
     {
-        if (array_key_exists('paid_amount', $this->attributes) && $this->attributes['paid_amount'] !== null) {
-            return number_format((float) $this->attributes['paid_amount'], 2, '.', '');
+        if (array_key_exists('paid_amount', $this->attributes)) {
+            $amount = (float) ($this->attributes['paid_amount'] ?? 0.0);
+
+            return number_format($amount, 2, '.', '');
         }
 
         $sum = $this->payments()->sum('amount');
@@ -173,8 +175,8 @@ class Invoice extends Model
      */
     public function getOutstandingAmountAttribute(): string
     {
-        if (array_key_exists('outstanding_amount', $this->attributes) && $this->attributes['outstanding_amount'] !== null) {
-            $remaining = max(0.0, (float) $this->attributes['outstanding_amount']);
+        if (array_key_exists('outstanding_amount', $this->attributes)) {
+            $remaining = max(0.0, (float) ($this->attributes['outstanding_amount'] ?? 0.0));
 
             return number_format($remaining, 2, '.', '');
         }
