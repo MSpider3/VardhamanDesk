@@ -13,6 +13,7 @@ use App\Services\InvoiceSendService;
 use App\Services\RecordPayment;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 
 beforeEach(function () {
     $this->admin = User::factory()->admin()->create(['email' => 'admin_auth_pay@vardhaman.local']);
@@ -128,4 +129,14 @@ test('admin can record payment on any invoice', function () {
     );
 
     expect($paymentAdmin->recorded_by)->toBe($this->admin->id);
+});
+
+test('reference_note validation allows valid UPI IDs, gateway IDs, and bank notes while rejecting invalid characters', function () {
+    $rules = ['reference_note' => ['nullable', 'string', 'regex:/^[A-Za-z0-9\/\-\s#.,:@_()]+$/']];
+
+    expect(Validator::make(['reference_note' => 'upi_user@okhdfcbank'], $rules)->passes())->toBeTrue()
+        ->and(Validator::make(['reference_note' => 'pay_O8xY9z123'], $rules)->passes())->toBeTrue()
+        ->and(Validator::make(['reference_note' => 'NEFT (HDFC Bank)'], $rules)->passes())->toBeTrue()
+        ->and(Validator::make(['reference_note' => 'Chq #00124/2026'], $rules)->passes())->toBeTrue()
+        ->and(Validator::make(['reference_note' => '<script>alert(1)</script>'], $rules)->fails())->toBeTrue();
 });

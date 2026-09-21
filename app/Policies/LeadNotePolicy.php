@@ -20,7 +20,13 @@ class LeadNotePolicy
      */
     public function view(User $user, LeadNote $note): bool
     {
-        return $user->isAdmin() || $note->lead->assigned_to === $user->id;
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        $lead = $note->lead()->withTrashed()->first();
+
+        return $lead && $lead->assigned_to === $user->id;
     }
 
     /**

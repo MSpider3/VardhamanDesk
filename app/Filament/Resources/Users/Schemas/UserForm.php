@@ -23,6 +23,7 @@ class UserForm
                     ->label('Email address')
                     ->email()
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Select::make('role')
                     ->options([

@@ -1,5 +1,6 @@
 <?php
 
+use App\Filament\Resources\Users\Pages\CreateUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
@@ -37,4 +38,17 @@ test('admin user can access filament user management resource page', function ()
     $this->actingAs($this->admin)
         ->get('/admin/users')
         ->assertSuccessful();
+});
+
+test('admin cannot create a user with an existing email due to unique validation', function () {
+    Livewire\Livewire::actingAs($this->admin)
+        ->test(CreateUser::class)
+        ->fillForm([
+            'name' => 'Duplicate Sales',
+            'email' => 'sales@vardhamandesk.local',
+            'role' => 'sales',
+            'password' => 'secret12345',
+        ])
+        ->call('create')
+        ->assertHasFormErrors(['email' => 'unique']);
 });

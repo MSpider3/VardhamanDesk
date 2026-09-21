@@ -94,3 +94,24 @@ test('lead notes are immutable and cannot be updated or deleted', function () {
         $note->delete();
     })->toThrow(DomainException::class);
 });
+
+test('viewing a lead note whose parent lead has been soft deleted does not crash and resolves permissions cleanly', function () {
+    $note = LeadNote::withoutGlobalScopes()->create([
+        'lead_id' => $this->lead->id,
+        'created_by' => $this->sales1->id,
+        'note' => 'Note for soft deleted lead',
+    ]);
+
+    // Soft delete the parent lead
+    $this->lead->delete();
+    expect($this->lead->trashed())->toBeTrue();
+
+    // Relationship withTrashed resolves the lead
+    expect($note->lead)->not->toBeNull()
+        ->and($note->lead->id)->toBe($this->lead->id);
+
+    // Policy view checks do not throw null pointer exception
+    expect(Gate::forUser($this->sales1)->allows('view', $note))->toBeTrue()
+        ->and(Gate::forUser($this->admin)->allows('view', $note))->toBeTrue()
+        ->and(Gate::forUser($this->sales2)->allows('view', $note))->toBeFalse();
+});
