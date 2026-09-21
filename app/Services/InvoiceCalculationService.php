@@ -76,6 +76,7 @@ class InvoiceCalculationService
                 'quantity' => number_format($qty, 2, '.', ''),
                 'rate' => number_format($rate, 2, '.', ''),
                 'amount' => number_format($amount, 2, '.', ''),
+                'gst_rate_percent' => number_format($ratePercent, 2, '.', ''),
                 'cgst_amount' => number_format($cgst, 2, '.', ''),
                 'sgst_amount' => number_format($sgst, 2, '.', ''),
                 'igst_amount' => number_format($igst, 2, '.', ''),

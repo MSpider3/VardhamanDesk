@@ -234,16 +234,16 @@
                     @if($isIntraState)
                         <td class="text-right">
                             {{ number_format((float)$item->cgst_amount, 2) }}
-                            <div class="muted" style="font-size: 8px;">({{ (float)($item->gstRate?->rate ?? 0) / 2 }}%)</div>
+                            <div class="muted" style="font-size: 8px;">({{ (float)($item->gst_rate_percent ?? $item->gstRate?->rate ?? 0) / 2 }}%)</div>
                         </td>
                         <td class="text-right">
                             {{ number_format((float)$item->sgst_amount, 2) }}
-                            <div class="muted" style="font-size: 8px;">({{ (float)($item->gstRate?->rate ?? 0) / 2 }}%)</div>
+                            <div class="muted" style="font-size: 8px;">({{ (float)($item->gst_rate_percent ?? $item->gstRate?->rate ?? 0) / 2 }}%)</div>
                         </td>
                     @else
                         <td class="text-right">
                             {{ number_format((float)$item->igst_amount, 2) }}
-                            <div class="muted" style="font-size: 8px;">({{ (float)($item->gstRate?->rate ?? 0) }}%)</div>
+                            <div class="muted" style="font-size: 8px;">({{ (float)($item->gst_rate_percent ?? $item->gstRate?->rate ?? 0) }}%)</div>
                         </td>
                     @endif
                 </tr>

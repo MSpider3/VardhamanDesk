@@ -90,10 +90,11 @@ class InvoiceSendService
 
             $calc = $this->calculationService->calculate($lockedInvoice->place_of_supply, $itemsData);
 
-            // Update line items tax breakdown
+            // Update line items tax breakdown and freeze GST rate percentage
             foreach ($calc['items'] as $index => $calcItem) {
                 $itemModel = $items[$index];
                 $itemModel->amount = $calcItem['amount'];
+                $itemModel->gst_rate_percent = $calcItem['gst_rate_percent'];
                 $itemModel->cgst_amount = $calcItem['cgst_amount'];
                 $itemModel->sgst_amount = $calcItem['sgst_amount'];
                 $itemModel->igst_amount = $calcItem['igst_amount'];

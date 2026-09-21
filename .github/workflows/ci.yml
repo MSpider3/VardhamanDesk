@@ -11,9 +11,6 @@ jobs:
     name: PHP ${{ matrix.php }} - ${{ matrix.db }}
     runs-on: ubuntu-latest
 
-    env:
-      APP_KEY: base64:3krIIbiHKLz2+5t4ajYfTdMBNnpsGMvbEV+4c/WR3RQ=
-
     strategy:
       fail-fast: false
       matrix:
@@ -51,6 +48,11 @@ jobs:
 
       - name: Install Composer Dependencies
         run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Prepare Environment & Generate Test Key
+        run: |
+          cp .env.example .env
+          php artisan key:generate --force
 
       - name: Run Test Suite (SQLite)
         if: matrix.db == 'sqlite'
