@@ -11,6 +11,9 @@ jobs:
     name: PHP ${{ matrix.php }} - ${{ matrix.db }}
     runs-on: ubuntu-latest
 
+    env:
+      APP_KEY: base64:3krIIbiHKLz2+5t4ajYfTdMBNnpsGMvbEV+4c/WR3RQ=
+
     strategy:
       fail-fast: false
       matrix:
